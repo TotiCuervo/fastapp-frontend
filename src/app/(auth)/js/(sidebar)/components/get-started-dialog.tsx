@@ -6,7 +6,6 @@ import PortfolioForm from '@/components/forms/portfolio-form'
 
 export default function GetStartedDialog() {
     const { data: portfolios = [], isLoading, invalidate } = usePortfoliosQuery()
-
     return (
         <Dialog open={!isLoading && portfolios.length === 0}>
             <DialogContent>
