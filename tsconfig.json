@@ -18,11 +18,7 @@
       }
     ],
     "paths": {
-<<<<<<< HEAD
       "@/*": ["./src/*"]
-=======
-      "@/*": ["./*"]
->>>>>>> e689d8c (Initial commit from Create Next App)
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
