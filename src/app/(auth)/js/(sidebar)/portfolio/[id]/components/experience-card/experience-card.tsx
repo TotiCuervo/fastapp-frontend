@@ -4,6 +4,7 @@ import CT from '@/components/copy/copiable-text'
 import { EllipsisDropdownMenu } from '@/components/dropdown/ellipsis-dropdown'
 import Experience from '@/lib/types/experience/experience'
 import React, { useState } from 'react'
+import ExperienceCardDropdown from './components/experience-card-dropdown'
 
 interface IProps {
     experience: Experience
@@ -21,39 +22,24 @@ export default function ExperienceCard({ experience }: IProps) {
     const [hoveringChild, setHoveringChild] = useState(false)
 
     return (
-        <CopiableCard
-            copyText={copyText}
-            hoveringChild={hoveringChild}
-        >
+        <CopiableCard copyText={copyText} hoveringChild={hoveringChild}>
             <div className="flex justify-between">
                 <i className="pb-2">Experience</i>
-                <EllipsisDropdownMenu />
+                <ExperienceCardDropdown />
             </div>
-            <CT
-                className="font-semibold"
-                hovering={setHoveringChild}
-            >
+            <CT className="font-semibold" hovering={setHoveringChild}>
                 {position}
             </CT>
             <div className="flex gap-2">
                 <CT hovering={setHoveringChild}>{company}</CT>•<CT hovering={setHoveringChild}>{location}</CT>
             </div>
             <div className="flex gap-4">
-                <CT
-                    className="font-light"
-                    hovering={setHoveringChild}
-                >
+                <CT className="font-light" hovering={setHoveringChild}>
                     {experienceType}
                 </CT>
-                <CT
-                    className="font-light"
-                    hovering={setHoveringChild}
-                >{`${start} - ${end}`}</CT>
+                <CT className="font-light" hovering={setHoveringChild}>{`${start} - ${end}`}</CT>
             </div>
-            <CT
-                className="pt-1"
-                hovering={setHoveringChild}
-            >
+            <CT className="pt-1" hovering={setHoveringChild}>
                 {experience.description}
             </CT>
         </CopiableCard>

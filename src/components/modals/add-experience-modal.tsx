@@ -9,19 +9,23 @@ import usePortfolioQueryInvalidation from '@/lib/query/portfolios/invalidations/
 
 interface AddEducationModalProps {
     trigger?: React.ReactNode
+    triggerClassName?: string
     portfolioId?: Portfolio['id']
 }
 
-export default function AddExperienceModal({ trigger, portfolioId }: AddEducationModalProps) {
+export default function AddExperienceModal({ trigger, triggerClassName, portfolioId }: AddEducationModalProps) {
     const [open, setOpen] = useState(false)
     const invalidate = usePortfolioQueryInvalidation()
-
+    function preventDefault(e: React.MouseEvent) {
+        e.preventDefault()
+    }
     return (
-        <Dialog
-            open={open}
-            onOpenChange={setOpen}
-        >
-            {trigger && <DialogTrigger>{trigger}</DialogTrigger>}
+        <Dialog open={open} onOpenChange={setOpen}>
+            {trigger && (
+                <DialogTrigger onClick={preventDefault} className={triggerClassName}>
+                    {trigger}
+                </DialogTrigger>
+            )}
             <DialogContent className="max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Add Experience</DialogTitle>
@@ -30,10 +34,7 @@ export default function AddExperienceModal({ trigger, portfolioId }: AddEducatio
                     <AddExperienceForm
                         Cancel={
                             <DialogClose>
-                                <Button
-                                    type="reset"
-                                    variant="outline"
-                                >
+                                <Button type="reset" variant="outline">
                                     Cancel
                                 </Button>
                             </DialogClose>
