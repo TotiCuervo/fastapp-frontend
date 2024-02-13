@@ -1,9 +1,9 @@
 'use client'
 
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import AddEducationForm from '../forms/add-education-form'
 import Button from '../buttons/button'
 import { useState } from 'react'
+import AddExperienceForm from '../forms/add-experience-form'
 import Portfolio from '@/lib/types/portfolio/portfolio'
 import usePortfolioQueryInvalidation from '@/lib/query/portfolios/invalidations/usePortfolioQueryInvalidation'
 
@@ -12,7 +12,7 @@ interface AddEducationModalProps {
     portfolioId?: Portfolio['id']
 }
 
-export default function AddEducationModal({ trigger, portfolioId }: AddEducationModalProps) {
+export default function AddExperienceModal({ trigger, portfolioId }: AddEducationModalProps) {
     const [open, setOpen] = useState(false)
     const invalidate = usePortfolioQueryInvalidation()
 
@@ -24,10 +24,10 @@ export default function AddEducationModal({ trigger, portfolioId }: AddEducation
             {trigger && <DialogTrigger>{trigger}</DialogTrigger>}
             <DialogContent className="max-w-2xl">
                 <DialogHeader>
-                    <DialogTitle>Add Education</DialogTitle>
+                    <DialogTitle>Add Experience</DialogTitle>
                 </DialogHeader>
                 <div className="pt-4">
-                    <AddEducationForm
+                    <AddExperienceForm
                         Cancel={
                             <DialogClose>
                                 <Button
@@ -42,7 +42,7 @@ export default function AddEducationModal({ trigger, portfolioId }: AddEducation
                             setOpen(false)
                             portfolioId && invalidate(portfolioId)
                         }}
-                        portfolioId={portfolioId}
+                        porfolioId={portfolioId}
                     />
                 </div>
             </DialogContent>

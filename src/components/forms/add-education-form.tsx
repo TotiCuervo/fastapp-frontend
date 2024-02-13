@@ -5,69 +5,90 @@ import { Input } from '@/components/ui/input'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import createPortfolio from '@/lib/endpoints/portfolio/create-portfolio'
 import Button from '@/components/buttons/button'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Alert } from '@/lib/types/alert'
 import Alerter from '@/components/alerts/alerter'
-import { useRouter } from 'next/navigation'
-import portfolioIdRoute from '@/app/(auth)/js/(sidebar)/portfolio/[id]/_route'
-import { Combobox } from '../combobox/combobox'
+import DegreeTypeCombobox from '../combobox/degree-type-combobox'
+import MonthSelect from '../select/month-select'
+import YearSelect from '../select/year-select'
+import createUserEducation from '@/lib/endpoints/education/create-user-education'
+import { useUserContext } from '@/context/UserContext'
+import convertMonthTextToInt from '@/lib/method/convert-month-text-to-int'
+import Portfolio from '@/lib/types/portfolio/portfolio'
+import capitalize from '@/lib/method/capitalize'
 
 const formSchema = z.object({
-    school_name: z.string().min(2, {
-        message: 'School Name must be at least 2 characters.'
+    school: z.string().min(2, {
+        message: 'School Name must be at least 2 characters.',
     }),
     degree: z.string().min(2, {
-        message: 'Degree must be at least 2 characters.'
+        message: 'Degree must be at least 2 characters.',
     }),
-    field_of_study: z.string().min(2, {
-        message: 'Field of Study must be at least 2 characters.'
+    fieldOfStudy: z.string().min(2, {
+        message: 'Field of Study must be at least 2 characters.',
     }),
-    start_date: z.date(),
-    end_date: z.date()
+    startMonth: z.string(),
+    startYear: z.string(),
+    endMonth: z.string(),
+    endYear: z.string(),
 })
 
-interface PortfolioFormProps {
+interface FormProps {
     onSuccessfullSubmit?: () => void
+    Cancel?: React.ReactNode
+    portfolioId?: Portfolio['id']
 }
 
-export default function AddEducationForm({ onSuccessfullSubmit }: PortfolioFormProps) {
-    const router = useRouter()
+export default function AddEducationForm({ onSuccessfullSubmit, Cancel, portfolioId }: FormProps) {
+    const { user } = useUserContext()
 
     const [alert, setAlert] = useState<Alert>()
 
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            // const res = await createPortfolio({
-            //     ...values
-            // })
+            const res = await createUserEducation({
+                userId: user!.id,
+                ...values,
+                degree: capitalize(values.degree),
+                startMonth: convertMonthTextToInt(values.startMonth),
+                endMonth: convertMonthTextToInt(values.endMonth),
+                startYear: parseInt(values.startYear),
+                endYear: parseInt(values.endYear),
+                portfolios: portfolioId ? [portfolioId] : undefined,
+            })
 
-            // if (res.status !== 201) {
-            //     throw new Error('Something went wrong')
-            //     return
-            // }
+            if (res.status !== 201) {
+                throw new Error('Something went wrong')
+                return
+            }
             onSuccessfullSubmit && onSuccessfullSubmit()
         } catch {
             setAlert({
                 show: true,
                 type: 'danger',
-                message: 'Looks like something went wrong. Please try again.'
+                message: 'Looks like something went wrong. Please try again.',
             })
         }
     }
     return (
         <>
-            <Alerter alert={alert} />
+            <Alerter
+                alert={alert}
+                className="mt-4"
+            />
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4"
+                >
                     <FormField
                         control={form.control}
-                        name="school_name"
+                        name="school"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>School Name</FormLabel>
@@ -78,23 +99,102 @@ export default function AddEducationForm({ onSuccessfullSubmit }: PortfolioFormP
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="degree"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Degree</FormLabel>
-                                <FormControl>
-                                    {/* <Input {...field} /> */}
-                                    <Combobox />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <Button type="submit" loading={form.formState.isSubmitting} loadingText="Submitting...">
-                        Submit
-                    </Button>
+                    <div className="flex flex-col gap-4 sm:flex-row">
+                        <FormField
+                            control={form.control}
+                            name="fieldOfStudy"
+                            render={({ field }) => (
+                                <FormItem className="w-full sm:w-4/6">
+                                    <FormLabel>Field of Study (Major)</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="degree"
+                            render={({ field }) => (
+                                <FormItem className="w-full sm:w-2/6">
+                                    <FormLabel>Degree</FormLabel>
+                                    <FormControl>
+                                        <DegreeTypeCombobox {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-4 sm:flex-row">
+                        <div className="flex w-full gap-4">
+                            <FormField
+                                control={form.control}
+                                name="startMonth"
+                                render={({ field }) => (
+                                    <FormItem className="w-1/2">
+                                        <FormLabel>Start Month</FormLabel>
+                                        <FormControl>
+                                            <MonthSelect {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="startYear"
+                                render={({ field }) => (
+                                    <FormItem className="w-1/2">
+                                        <FormLabel>Start Year</FormLabel>
+                                        <FormControl>
+                                            <YearSelect {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="flex w-full gap-4">
+                            <FormField
+                                control={form.control}
+                                name="endMonth"
+                                render={({ field }) => (
+                                    <FormItem className="w-1/2">
+                                        <FormLabel>End Month</FormLabel>
+                                        <FormControl>
+                                            <MonthSelect {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="endYear"
+                                render={({ field }) => (
+                                    <FormItem className="w-1/2">
+                                        <FormLabel>End Year</FormLabel>
+                                        <FormControl>
+                                            <YearSelect {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </div>
+                    <div className="flex justify-end gap-2">
+                        {Cancel && Cancel}
+                        <Button
+                            type="submit"
+                            loading={form.formState.isSubmitting}
+                            loadingText="Submitting..."
+                        >
+                            Submit
+                        </Button>
+                    </div>
                 </form>
             </Form>
         </>

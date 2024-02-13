@@ -46,7 +46,7 @@ export default function PortfolioForm({ onSuccessfullSubmit }: PortfolioFormProp
                 return
             }
             onSuccessfullSubmit && onSuccessfullSubmit()
-            router.push(portfolioIdRoute(res.data.id))
+            router.push(portfolioIdRoute(res.data.data.id))
         } catch {
             setAlert({
                 show: true,

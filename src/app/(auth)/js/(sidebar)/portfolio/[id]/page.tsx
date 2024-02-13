@@ -1,13 +1,15 @@
 'use client'
 
 import Button from '@/components/buttons/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import usePortfolioQuery from '@/lib/query/portfolios/usePortfolioQuery'
-import { notFound, useRouter } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import React from 'react'
-import DetailCard from './components/detail-card'
 import Section from './components/section'
 import AddEducationModal from '@/components/modals/add-education-modal'
+import AddExperienceModal from '@/components/modals/add-experience-modal'
+import EducationCard from './components/education-card'
+import CT from '@/components/copy/copiable-text'
+import ExperienceCard from './components/experience-card'
 
 interface IProps {
     params: {
@@ -20,23 +22,25 @@ interface BasicInfo {
     content: string
 }
 
+const AddButton = () => <Button variant="ghost">Add</Button>
+
 const basicInformation: BasicInfo[] = [
     {
         title: 'Email',
-        content: 'cuervor14@gmail.com'
+        content: 'cuervor14@gmail.com',
     },
     {
         title: 'Phone',
-        content: '123-456-7890'
+        content: '123-456-7890',
     },
     {
         title: 'Birthday',
-        content: '01/01/1990'
+        content: '01/01/1990',
     },
     {
         title: 'Location',
-        content: 'Columbus, OH, USA'
-    }
+        content: 'Columbus, OH, USA',
+    },
     // {
     //     title: 'Are you authorized to work in the US?',
     //     content: 'Yes'
@@ -72,33 +76,55 @@ export default function page({ params }: IProps) {
     }
 
     return (
-        <div className="mx-auto flex w-full max-w-[70%] flex-col gap-4">
+        <div className="mx-auto flex w-full max-w-[50%] flex-col gap-4">
             <h1 className="text-4xl font-bold">{data.name}</h1>
             <div className="flex flex-wrap gap-10">
                 {basicInformation.map((info, index) => (
-                    <div key={index} className="flex flex-col">
+                    <div
+                        key={index}
+                        className="flex flex-col"
+                    >
                         <span className="font-semibold">{info.title}</span>
-                        <p>{info.content}</p>
+                        <CT>{info.content}</CT>
                     </div>
                 ))}
             </div>
 
             <div className="flex gap-10 pt-8">
                 <div className="flex grow flex-col gap-10">
-                    <Section title="Work Experience" addModal={<></>}>
-                        <DetailCard title="What is your ethnicity?" content={'Hispanic/Latinx'} />
-                        <DetailCard title="Are you Authorized to work in the US?" content={'Yes'} />
-                        <DetailCard title="What is your ethnicity?" content={'Hispanic/Latinx'} />
-                        <DetailCard title="Are you Authorized to work in the US?" content={'Yes'} />
+                    <Section
+                        title="Work Experience"
+                        addModal={
+                            <AddExperienceModal
+                                trigger={<AddButton />}
+                                portfolioId={id}
+                            />
+                        }
+                    >
+                        {data.experience.map((experience, index) => (
+                            <ExperienceCard
+                                key={`experience ${index}`}
+                                experience={experience}
+                            />
+                        ))}
+                        {data.experience.length === 0 && <p className="w-full text-center">No experience, yet</p>}
                     </Section>
                     <Section
                         title="Education"
-                        addModal={<AddEducationModal trigger={<Button variant="ghost">Add</Button>} />}
+                        addModal={
+                            <AddEducationModal
+                                trigger={<AddButton />}
+                                portfolioId={id}
+                            />
+                        }
                     >
-                        <DetailCard title="What is your ethnicity?" content={'Hispanic/Latinx'} />
-                        <DetailCard title="Are you Authorized to work in the US?" content={'Yes'} />
-                        <DetailCard title="What is your ethnicity?" content={'Hispanic/Latinx'} />
-                        <DetailCard title="Are you Authorized to work in the US?" content={'Yes'} />
+                        {data.education.map((education, index) => (
+                            <EducationCard
+                                key={`education ${index}`}
+                                education={education}
+                            />
+                        ))}
+                        {data.education.length === 0 && <p className="w-full text-center">No education, yet</p>}
                     </Section>
                 </div>
             </div>

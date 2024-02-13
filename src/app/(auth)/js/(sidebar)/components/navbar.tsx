@@ -9,6 +9,7 @@ import LogoImage from '@/components/misc/logo-image'
 import jobsRoute from '@/lib/routes/jobsRoute'
 import jsApplicationsRoute from '@/lib/routes/jsApplicationsRoute'
 import jsResumesRoute from '@/lib/routes/jsResumesRoute'
+import { ThemeToggle } from '@/components/misc/theme-toggle'
 
 export default function Navbar() {
     return (
@@ -37,7 +38,11 @@ export default function Navbar() {
                         text="Jobs"
                     /> */}
                 </NavbarGroup>
-                <UserDropdown />
+                <div className="flex gap-4">
+                    <ThemeToggle />
+
+                    <UserDropdown />
+                </div>
             </NavbarGroup>
         </NavbarContainer>
     )
