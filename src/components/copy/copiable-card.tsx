@@ -15,6 +15,7 @@ export default function CopiableCard({ children, className, copyText, hoveringCh
 
     function copyToClipboard() {
         if (hoveringChild) return
+        console.log({ hoveringChild })
         navigator.clipboard.writeText(copyText)
         setIsCopied(true)
         toast.success(`"${copyText}" copied to clipboard!`)

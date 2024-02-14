@@ -20,6 +20,9 @@ import createUserExperience from '@/lib/endpoints/experience/create-user-experie
 import ExperienceInsert from '@/lib/types/experience/experience-insert'
 import ExperienceType from '@/lib/types/experience/experience-type'
 import Portfolio from '@/lib/types/portfolio/portfolio'
+import Experience from '@/lib/types/experience/experience'
+import ExperienceUpdate from '@/lib/types/experience/experience-update'
+import editUserExperience from '@/lib/endpoints/experience/edit-user-experience'
 
 const formSchema = z.object({
     position: z.string().min(2).max(255),
@@ -44,54 +47,96 @@ const conditionalFormSchema = (currentlyWorkHere: boolean) =>
 interface FormProps {
     onSuccessfullSubmit?: () => void
     Cancel?: React.ReactNode
-    porfolioId?: Portfolio['id']
+    experience?: Experience
+    portfolioId?: Portfolio['id']
 }
 
-export default function AddExperienceForm({ onSuccessfullSubmit, Cancel, porfolioId }: FormProps) {
+export default function AddExperienceForm({ onSuccessfullSubmit, Cancel, experience, portfolioId }: FormProps) {
     const { user } = useUserContext()
-
     const [alert, setAlert] = useState<Alert>()
     const [currentlyWorkHere, setCurrentlyWorkHere] = useState(false)
+    const submitFunction = experience ? onSubmitEdit : onSubmitCreate
 
     const form = useForm({
         resolver: zodResolver(conditionalFormSchema(currentlyWorkHere)),
+        defaultValues: {
+            position: experience?.position ?? '',
+            company: experience?.company.companyName ?? '',
+            location: experience?.location ?? '',
+            experience_type: experience?.experienceType ?? '',
+            startMonth: experience?.startedOn.monthName.full ?? '',
+            startYear: experience?.startedOn.year.toString() ?? '',
+            endMonth: experience?.endedOn?.monthName?.full ?? null,
+            endYear: experience?.endedOn?.year?.toString() ?? null,
+            description: experience?.description ?? '',
+            isCurrent: experience?.isCurrent !== undefined ? experience?.isCurrent : false,
+        },
     })
 
-    const {
-        control,
-        handleSubmit,
-        watch,
-        setValue,
-        formState: { isSubmitting, isValid, errors },
-    } = form
-    const watchCurrentlyWorkHere = watch('is_current', false)
+    const { control, handleSubmit, watch, setValue } = form
+    const watchCurrentlyWorkHere = watch('isCurrent', false)
 
     useEffect(() => {
         // Update the validation schema when the checkbox state changes
         formResolver: zodResolver(conditionalFormSchema(watchCurrentlyWorkHere))
         if (watchCurrentlyWorkHere) {
-            console.log('made it')
             // If the checkbox is checked, clear the values
             setValue('endMonth', null)
             setValue('endYear', null)
         }
     }, [watchCurrentlyWorkHere, setValue])
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmitCreate(values: z.infer<typeof formSchema>) {
         try {
-            // Convert start_month to an integer
             const startMonthInt = convertMonthTextToInt(values.startMonth)
-            // Prepare the data for the API call
+
             const apiData: ExperienceInsert = {
                 userId: user!.id,
                 ...values,
                 startMonth: startMonthInt,
                 startYear: parseInt(values.startYear),
                 experienceType: values.experience_type as ExperienceType,
-                portfolios: porfolioId ? [porfolioId] : [],
+                portfolios: portfolioId ? [portfolioId] : [],
                 description: values.description ?? undefined,
             }
-            console.log({ apiData })
+            // @ts-ignore
+            if (values.endMonth) {
+                // @ts-ignore
+                apiData.endMonth = convertMonthTextToInt(values.endMonth)
+            }
+            // @ts-ignore
+            if (values.endYear) {
+                // @ts-ignore
+                apiData.end_year = parseInt(values.endYear)
+            }
+            const res = await createUserExperience(apiData)
+            if (res.status !== 201) {
+                throw new Error('Something went wrong')
+            }
+            onSuccessfullSubmit && onSuccessfullSubmit()
+        } catch (error) {
+            setAlert({
+                show: true,
+                type: 'danger',
+                message: 'Looks like something went wrong. Please try again.',
+            })
+        }
+    }
+
+    async function onSubmitEdit(values: z.infer<typeof formSchema>) {
+        try {
+            const startMonthInt = convertMonthTextToInt(values.startMonth)
+
+            const apiData: ExperienceUpdate = {
+                userId: user!.id,
+                id: experience!.id,
+                ...values,
+                startMonth: startMonthInt,
+                startYear: parseInt(values.startYear),
+                experienceType: values.experience_type as ExperienceType,
+                portfolios: portfolioId ? [portfolioId] : [],
+                description: values.description ?? undefined,
+            }
             // @ts-ignore
             if (values.endMonth) {
                 // @ts-ignore
@@ -103,7 +148,7 @@ export default function AddExperienceForm({ onSuccessfullSubmit, Cancel, porfoli
                 apiData.end_year = parseInt(values.endYear)
             }
             // API call to create user education
-            const res = await createUserExperience(apiData)
+            const res = await editUserExperience(apiData)
             if (res.status !== 201) {
                 throw new Error('Something went wrong')
             }
@@ -127,7 +172,7 @@ export default function AddExperienceForm({ onSuccessfullSubmit, Cancel, porfoli
             <Form {...form}>
                 <form
                     // @ts-ignore
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={handleSubmit(submitFunction)}
                     className="space-y-4"
                 >
                     <div className="flex gap-4">
@@ -258,6 +303,7 @@ export default function AddExperienceForm({ onSuccessfullSubmit, Cancel, porfoli
                         render={({ field }) => (
                             <FormItem className="flex flex-row items-start space-x-2 space-y-0">
                                 <FormControl>
+                                    {/* @ts-ignore */}
                                     <Checkbox
                                         {...field}
                                         checked={field.value}

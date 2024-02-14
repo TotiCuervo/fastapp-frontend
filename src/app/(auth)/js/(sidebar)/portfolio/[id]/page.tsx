@@ -10,6 +10,7 @@ import AddExperienceModal from '@/components/modals/add-experience-modal'
 import EducationCard from './components/education-card'
 import CT from '@/components/copy/copiable-text'
 import ExperienceCard from './components/experience-card/experience-card'
+import usePortfolioQueryInvalidation from '@/lib/query/portfolios/invalidations/usePortfolioQueryInvalidation'
 
 interface IProps {
     params: {
@@ -27,20 +28,20 @@ const AddButton = () => <Button variant="ghost">Add</Button>
 const basicInformation: BasicInfo[] = [
     {
         title: 'Email',
-        content: 'cuervor14@gmail.com'
+        content: 'cuervor14@gmail.com',
     },
     {
         title: 'Phone',
-        content: '123-456-7890'
+        content: '123-456-7890',
     },
     {
         title: 'Birthday',
-        content: '01/01/1990'
+        content: '01/01/1990',
     },
     {
         title: 'Location',
-        content: 'Columbus, OH, USA'
-    }
+        content: 'Columbus, OH, USA',
+    },
     // {
     //     title: 'Are you authorized to work in the US?',
     //     content: 'Yes'
@@ -65,7 +66,9 @@ const basicInformation: BasicInfo[] = [
 
 export default function page({ params }: IProps) {
     const { id } = params
-    const { data, isLoading } = usePortfolioQuery({ id })
+    const intId = parseInt(id)
+    const { data, isLoading } = usePortfolioQuery({ id: intId })
+    const invalidate = usePortfolioQueryInvalidation()
 
     if (!isLoading && data === undefined) {
         notFound()
@@ -75,12 +78,19 @@ export default function page({ params }: IProps) {
         return <></>
     }
 
+    function invalidation() {
+        invalidate(intId)
+    }
+
     return (
         <div className="mx-auto flex w-full max-w-[50%] flex-col gap-4">
             <h1 className="text-4xl font-bold">{data.name}</h1>
             <div className="flex flex-wrap gap-10">
                 {basicInformation.map((info, index) => (
-                    <div key={index} className="flex flex-col">
+                    <div
+                        key={index}
+                        className="flex flex-col"
+                    >
                         <span className="font-semibold">{info.title}</span>
                         <CT>{info.content}</CT>
                     </div>
@@ -91,19 +101,38 @@ export default function page({ params }: IProps) {
                 <div className="flex grow flex-col gap-10">
                     <Section
                         title="Work Experience"
-                        addModal={<AddExperienceModal trigger={<AddButton />} portfolioId={id} />}
+                        addModal={
+                            <AddExperienceModal
+                                trigger={<AddButton />}
+                                portfolioId={intId}
+                                onSuccessfullSubmit={invalidation}
+                            />
+                        }
                     >
                         {data.experience.map((experience, index) => (
-                            <ExperienceCard key={`experience ${index}`} experience={experience} />
+                            <ExperienceCard
+                                key={`experience ${index}`}
+                                experience={experience}
+                                portfolioId={intId}
+                                invalidation={invalidation}
+                            />
                         ))}
                         {data.experience.length === 0 && <p className="w-full text-center">No experience, yet</p>}
                     </Section>
                     <Section
                         title="Education"
-                        addModal={<AddEducationModal trigger={<AddButton />} portfolioId={id} />}
+                        addModal={
+                            <AddEducationModal
+                                trigger={<AddButton />}
+                                portfolioId={intId}
+                            />
+                        }
                     >
                         {data.education.map((education, index) => (
-                            <EducationCard key={`education ${index}`} education={education} />
+                            <EducationCard
+                                key={`education ${index}`}
+                                education={education}
+                            />
                         ))}
                         {data.education.length === 0 && <p className="w-full text-center">No education, yet</p>}
                     </Section>
