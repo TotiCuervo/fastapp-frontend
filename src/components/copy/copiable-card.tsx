@@ -14,6 +14,7 @@ export default function CopiableCard({ children, className, copyText, hoveringCh
     const [isCopied, setIsCopied] = useState(false)
 
     function copyToClipboard() {
+        console.log('hit')
         if (hoveringChild) return
         console.log({ hoveringChild })
         navigator.clipboard.writeText(copyText)
@@ -51,19 +52,13 @@ export default function CopiableCard({ children, className, copyText, hoveringCh
                           : 'group-hover/card:text-fastapp-500'
                 )}
                 style={{
-                    left: 'calc(100% + 15px)',
+                    left: 'calc(100% + 15px)'
                 }}
             >
                 {!isCopied ? (
-                    <ClipboardIcon
-                        size={15}
-                        className="transition group-active/card:rotate-[20deg]"
-                    />
+                    <ClipboardIcon size={15} className="transition group-active/card:rotate-[20deg]" />
                 ) : (
-                    <ThumbsUpIcon
-                        size={15}
-                        className="transition group-active/card:rotate-[20deg]"
-                    />
+                    <ThumbsUpIcon size={15} className="transition group-active/card:rotate-[20deg]" />
                 )}
             </div>
         </div>
