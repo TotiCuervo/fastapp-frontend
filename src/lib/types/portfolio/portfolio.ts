@@ -7,5 +7,5 @@ export default interface Portfolio {
     description: string
     education: Education[]
     skills: []
-    experience: Experience[]
+    experiences: Experience[]
 }

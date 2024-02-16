@@ -51,7 +51,7 @@ interface FormProps {
     portfolioId?: Portfolio['id']
 }
 
-export default function AddExperienceForm({ onSuccessfullSubmit, Cancel, experience, portfolioId }: FormProps) {
+export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience, portfolioId }: FormProps) {
     const { user } = useUserContext()
     const [alert, setAlert] = useState<Alert>()
     const [currentlyWorkHere, setCurrentlyWorkHere] = useState(false)
@@ -149,7 +149,7 @@ export default function AddExperienceForm({ onSuccessfullSubmit, Cancel, experie
             }
             // API call to create user education
             const res = await editUserExperience(apiData)
-            if (res.status !== 201) {
+            if (res.status !== 200) {
                 throw new Error('Something went wrong')
             }
             onSuccessfullSubmit && onSuccessfullSubmit()

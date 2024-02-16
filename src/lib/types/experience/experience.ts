@@ -1,6 +1,5 @@
 import Company from '../company/company'
 import DateProfile from '../misc/DateProfile'
-import { User } from '../user'
 import ExperienceType from './experience-type'
 
 export default interface Experience {
@@ -13,5 +12,4 @@ export default interface Experience {
     description: string
     isCurrent: boolean
     experienceType: ExperienceType
-    userId: User['id']
 }

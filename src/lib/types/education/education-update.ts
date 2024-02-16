@@ -1,16 +1,16 @@
 import Insert from '../insert'
 import Portfolio from '../portfolio/portfolio'
 import { User } from '../user'
-import Experience from './experience'
+import Education from './education'
 
-interface ExperienceInsert extends Insert<Omit<Experience, 'company' | 'month'>> {
+interface EducationUpdate extends Insert<Education> {
+    id: Education['id']
     userId: User['id']
     portfolios?: Portfolio['id'][]
-    company: string
     startMonth: number
     startYear: number
-    endMonth?: number
-    endYear?: number
+    endMonth: number
+    endYear: number
 }
 
-export default ExperienceInsert
+export default EducationUpdate

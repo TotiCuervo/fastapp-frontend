@@ -1,8 +1,10 @@
 import Insert from '../insert'
 import Portfolio from '../portfolio/portfolio'
+import { User } from '../user'
 import Education from './education'
 
-interface EducationInsert extends Insert<Education, 'userId'> {
+interface EducationInsert extends Insert<Education> {
+    userId: User['id']
     portfolios?: Portfolio['id'][]
     startMonth: number
     startYear: number

@@ -17,6 +17,8 @@ import { useUserContext } from '@/context/UserContext'
 import convertMonthTextToInt from '@/lib/method/convert-month-text-to-int'
 import Portfolio from '@/lib/types/portfolio/portfolio'
 import capitalize from '@/lib/method/capitalize'
+import Education from '@/lib/types/education/education'
+import updateUserEducation from '@/lib/endpoints/education/update-user-education'
 
 const formSchema = z.object({
     school: z.string().min(2, {
@@ -38,18 +40,30 @@ interface FormProps {
     onSuccessfullSubmit?: () => void
     Cancel?: React.ReactNode
     portfolioId?: Portfolio['id']
+    education?: Education
 }
 
-export default function AddEducationForm({ onSuccessfullSubmit, Cancel, portfolioId }: FormProps) {
+export default function AddEducationForm({ onSuccessfullSubmit, Cancel, portfolioId, education }: FormProps) {
     const { user } = useUserContext()
 
     const [alert, setAlert] = useState<Alert>()
 
+    const submitFunction = education ? updateSubmit : createSubmit
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            school: education?.school || '',
+            degree: education?.degree || '',
+            fieldOfStudy: education?.fieldOfStudy || '',
+            startMonth: education?.startedOn.monthName.short || '',
+            startYear: education?.startedOn.year.toString() || '',
+            endMonth: education?.endedOn.monthName.full || '',
+            endYear: education?.endedOn.year.toString() || '',
+        },
     })
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function createSubmit(values: z.infer<typeof formSchema>) {
         try {
             const res = await createUserEducation({
                 userId: user!.id,
@@ -75,6 +89,35 @@ export default function AddEducationForm({ onSuccessfullSubmit, Cancel, portfoli
             })
         }
     }
+
+    async function updateSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            const res = await updateUserEducation({
+                id: education!.id,
+                userId: user!.id,
+                ...values,
+                degree: capitalize(values.degree),
+                startMonth: convertMonthTextToInt(values.startMonth),
+                endMonth: convertMonthTextToInt(values.endMonth),
+                startYear: parseInt(values.startYear),
+                endYear: parseInt(values.endYear),
+                portfolios: portfolioId ? [portfolioId] : undefined,
+            })
+
+            if (res.status !== 200) {
+                throw new Error('Something went wrong')
+                return
+            }
+            onSuccessfullSubmit && onSuccessfullSubmit()
+        } catch {
+            setAlert({
+                show: true,
+                type: 'danger',
+                message: 'Looks like something went wrong. Please try again.',
+            })
+        }
+    }
+
     return (
         <>
             <Alerter
@@ -83,7 +126,7 @@ export default function AddEducationForm({ onSuccessfullSubmit, Cancel, portfoli
             />
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(onSubmit)}
+                    onSubmit={form.handleSubmit(submitFunction)}
                     className="space-y-4"
                 >
                     <FormField

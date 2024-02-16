@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 import Section from './components/section'
 import AddEducationModal from '@/components/modals/add-education-modal'
-import AddExperienceModal from '@/components/modals/add-experience-modal'
+import AddExperienceModal from '@/components/modals/experience-form-modal'
 import EducationCard from './components/education-card'
 import CT from '@/components/copy/copiable-text'
 import ExperienceCard from './components/experience-card/experience-card'
@@ -132,6 +132,7 @@ export default function page({ params }: IProps) {
                             <EducationCard
                                 key={`education ${index}`}
                                 education={education}
+                                invalidation={invalidation}
                             />
                         ))}
                         {data.education.length === 0 && <p className="w-full text-center">No education, yet</p>}
