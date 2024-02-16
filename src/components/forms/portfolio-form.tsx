@@ -11,19 +11,29 @@ import { useState } from 'react'
 import { Alert } from '@/lib/types/alert'
 import Alerter from '@/components/alerts/alerter'
 import { useRouter } from 'next/navigation'
-import portfolioIdRoute from '@/app/(auth)/js/(sidebar)/portfolio/[id]/_route'
+import portfolioIdRoute from '@/app/(auth)/js/portfolio/[id]/_route'
+import Portfolio from '@/lib/types/portfolio/portfolio'
+import UpdatePortfolio from '@/lib/endpoints/portfolio/update-portfolio'
 
 const formSchema = z.object({
     name: z.string().min(2, {
-        message: 'Portfolio must be at least 2 characters.',
-    }),
+        message: 'Portfolio must be at least 2 characters.'
+    })
 })
 
 interface PortfolioFormProps {
-    onSuccessfullSubmit?: () => void
+    onSuccessfullSubmit?: (portfolio: Portfolio) => void
+    Cancel?: React.ReactNode
+    portfolio?: Portfolio
+    saveButtonText?: string
 }
 
-export default function PortfolioForm({ onSuccessfullSubmit }: PortfolioFormProps) {
+export default function PortfolioForm({
+    onSuccessfullSubmit,
+    Cancel,
+    portfolio,
+    saveButtonText = 'Submit'
+}: PortfolioFormProps) {
     const router = useRouter()
 
     const [alert, setAlert] = useState<Alert>()
@@ -31,38 +41,59 @@ export default function PortfolioForm({ onSuccessfullSubmit }: PortfolioFormProp
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: 'My Portfolio',
-        },
+            name: portfolio?.name || 'My Portfolio'
+        }
     })
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    const onSubmit = portfolio ? updateSubmit : createSubmit
+
+    async function createSubmit(values: z.infer<typeof formSchema>) {
         try {
             const res = await createPortfolio({
-                ...values,
+                ...values
             })
 
             if (res.status !== 201) {
                 throw new Error('Something went wrong')
                 return
             }
-            onSuccessfullSubmit && onSuccessfullSubmit()
+            onSuccessfullSubmit && onSuccessfullSubmit(res.data.data)
+        } catch {
+            setAlert({
+                show: true,
+                type: 'danger',
+                message: 'Looks like something went wrong. Please try again.'
+            })
+        }
+    }
+
+    async function updateSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            const res = await UpdatePortfolio({
+                ...portfolio!,
+                ...values
+            })
+
+            if (res.status !== 200) {
+                throw new Error('Something went wrong')
+                return
+            }
+            onSuccessfullSubmit && onSuccessfullSubmit(res.data.data)
             router.push(portfolioIdRoute(res.data.data.id))
         } catch {
             setAlert({
                 show: true,
                 type: 'danger',
-                message: 'Looks like something went wrong. Please try again.',
+                message: 'Looks like something went wrong. Please try again.'
             })
         }
     }
+
     return (
         <>
             <Alerter alert={alert} />
             <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-8"
-                >
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
                         control={form.control}
                         name="name"
@@ -76,13 +107,12 @@ export default function PortfolioForm({ onSuccessfullSubmit }: PortfolioFormProp
                             </FormItem>
                         )}
                     />
-                    <Button
-                        type="submit"
-                        loading={form.formState.isSubmitting}
-                        loadingText="Submitting..."
-                    >
-                        Submit
-                    </Button>
+                    <div className="flex justify-end gap-4">
+                        {Cancel && Cancel}
+                        <Button type="submit" loading={form.formState.isSubmitting} loadingText="Submitting...">
+                            {saveButtonText}
+                        </Button>
+                    </div>
                 </form>
             </Form>
         </>

@@ -37,7 +37,7 @@ const Providers: React.FC<ProvidersProps> = ({ children }) => {
                 </QueryClientProvider>
                 <Toaster
                     richColors
-                    position="top-right"
+                    position="bottom-right"
                     duration={5000}
                     closeButton
                 />

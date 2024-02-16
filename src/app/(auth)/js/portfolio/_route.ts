@@ -1,4 +1,4 @@
-import route from '../../_route'
+import route from '../_route'
 
 const portfolioRoute = () => `${route()}/portfolio`
 

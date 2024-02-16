@@ -17,7 +17,7 @@ export default function NavbarItem({ text, href }: NavbarItemProps) {
             href={href}
             className={twMerge(
                 'transition',
-                isActive ? 'font-semibold text-gray-900' : 'text-gray-500 hover:text-gray-900'
+                isActive ? 'font-semibold text-gray-900 dark:text-gray-200' : 'text-gray-500 hover:text-gray-900'
             )}
         >
             {text}

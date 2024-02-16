@@ -3,7 +3,7 @@ import CopiableCard from '@/components/copy/copiable-card'
 import CT from '@/components/copy/copiable-text'
 import Experience from '@/lib/types/experience/experience'
 import React, { useState } from 'react'
-import CardOptionsDropdown from '../../../../../../../../components/dropdown/card-options-dropdown'
+import CardOptionsDropdown from '../../../../../../components/dropdown/card-options-dropdown'
 import Portfolio from '@/lib/types/portfolio/portfolio'
 import ExperienceFormModal from '@/components/modals/experience-form-modal'
 import ExperienceDeleteModal from '@/components/modals/delete-modals/modals/experience-delete-modal'
@@ -29,10 +29,7 @@ export default function ExperienceCard({ experience, invalidation, portfolioId }
 
     return (
         <>
-            <CopiableCard
-                copyText={copyText}
-                hoveringChild={hoveringChild}
-            >
+            <CopiableCard copyText={copyText} hoveringChild={hoveringChild}>
                 <div className="flex justify-between">
                     <i className="pb-2">Experience</i>
                     <CardOptionsDropdown
@@ -40,31 +37,19 @@ export default function ExperienceCard({ experience, invalidation, portfolioId }
                         handleDeleteClick={() => setOpenDeleteModal(true)}
                     />
                 </div>
-                <CT
-                    className="font-semibold"
-                    hovering={setHoveringChild}
-                >
+                <CT className="font-semibold" hovering={setHoveringChild}>
                     {position}
                 </CT>
                 <div className="flex gap-2">
                     <CT hovering={setHoveringChild}>{company}</CT>•<CT hovering={setHoveringChild}>{location}</CT>
                 </div>
                 <div className="flex gap-4">
-                    <CT
-                        className="font-light"
-                        hovering={setHoveringChild}
-                    >
+                    <CT className="font-light" hovering={setHoveringChild}>
                         {experienceType}
                     </CT>
-                    <CT
-                        className="font-light"
-                        hovering={setHoveringChild}
-                    >{`${start} - ${end}`}</CT>
+                    <CT className="font-light" hovering={setHoveringChild}>{`${start} - ${end}`}</CT>
                 </div>
-                <CT
-                    className="pt-1"
-                    hovering={setHoveringChild}
-                >
+                <CT className="pt-1" hovering={setHoveringChild}>
                     {experience.description}
                 </CT>
             </CopiableCard>

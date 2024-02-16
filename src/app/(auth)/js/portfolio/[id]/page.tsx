@@ -9,8 +9,9 @@ import AddEducationModal from '@/components/modals/add-education-modal'
 import AddExperienceModal from '@/components/modals/experience-form-modal'
 import EducationCard from './components/education-card'
 import CT from '@/components/copy/copiable-text'
-import ExperienceCard from './components/experience-card/experience-card'
+import ExperienceCard from './components/experience-card'
 import usePortfolioQueryInvalidation from '@/lib/query/portfolios/invalidations/usePortfolioQueryInvalidation'
+import PageHeader from './components/page-header'
 
 interface IProps {
     params: {
@@ -28,40 +29,20 @@ const AddButton = () => <Button variant="ghost">Add</Button>
 const basicInformation: BasicInfo[] = [
     {
         title: 'Email',
-        content: 'cuervor14@gmail.com',
+        content: 'cuervor14@gmail.com'
     },
     {
         title: 'Phone',
-        content: '123-456-7890',
+        content: '123-456-7890'
     },
     {
         title: 'Birthday',
-        content: '01/01/1990',
+        content: '01/01/1990'
     },
     {
         title: 'Location',
-        content: 'Columbus, OH, USA',
-    },
-    // {
-    //     title: 'Are you authorized to work in the US?',
-    //     content: 'Yes'
-    // },
-    // {
-    //     title: 'Will you now or in the future require sponsorship for employment visa status?',
-    //     content: 'No'
-    // },
-    // {
-    //     title: 'Do you have a disability?',
-    //     content: 'No'
-    // },
-    // {
-    //     title: 'Are you a veteran?',
-    //     content: 'No'
-    // },
-    // {
-    //     title: 'What is your gender?',
-    //     content: 'Male'
-    // }
+        content: 'Columbus, OH, USA'
+    }
 ]
 
 export default function page({ params }: IProps) {
@@ -84,13 +65,10 @@ export default function page({ params }: IProps) {
 
     return (
         <div className="mx-auto flex w-full max-w-[50%] flex-col gap-4">
-            <h1 className="text-4xl font-bold">{data.name}</h1>
+            <PageHeader portfolio={data} invalidation={invalidation} />
             <div className="flex flex-wrap gap-10">
                 {basicInformation.map((info, index) => (
-                    <div
-                        key={index}
-                        className="flex flex-col"
-                    >
+                    <div key={index} className="flex flex-col">
                         <span className="font-semibold">{info.title}</span>
                         <CT>{info.content}</CT>
                     </div>
@@ -125,6 +103,7 @@ export default function page({ params }: IProps) {
                             <AddEducationModal
                                 trigger={<AddButton />}
                                 portfolioId={intId}
+                                onSuccessfullSubmit={invalidation}
                             />
                         }
                     >
