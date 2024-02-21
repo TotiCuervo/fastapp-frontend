@@ -28,11 +28,11 @@ const formSchema = z.object({
     position: z.string().min(2).max(255),
     company: z.string().min(2).max(255),
     location: z.string().min(2).max(255),
-    experience_type: z.string().min(2).max(255),
+    experienceType: z.string().min(2).max(255),
     startMonth: z.string().min(2).max(255),
     startYear: z.string().min(4).max(4),
     description: z.string().optional().nullable(),
-    isCurrent: z.boolean().default(false),
+    isCurrent: z.boolean().default(false)
 })
 
 const conditionalFormSchema = (currentlyWorkHere: boolean) =>
@@ -41,7 +41,7 @@ const conditionalFormSchema = (currentlyWorkHere: boolean) =>
           formSchema.omit({ endMonth: true, endYear: true })
         : formSchema.extend({
               endMonth: z.string().min(2).max(255),
-              endYear: z.string().min(4).max(4),
+              endYear: z.string().min(4).max(4)
           })
 
 interface FormProps {
@@ -63,14 +63,14 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
             position: experience?.position ?? '',
             company: experience?.company.companyName ?? '',
             location: experience?.location ?? '',
-            experience_type: experience?.experienceType ?? '',
+            experienceType: experience?.experienceType ?? '',
             startMonth: experience?.startedOn.monthName.full ?? '',
             startYear: experience?.startedOn.year.toString() ?? '',
             endMonth: experience?.endedOn?.monthName?.full ?? null,
             endYear: experience?.endedOn?.year?.toString() ?? null,
             description: experience?.description ?? '',
-            isCurrent: experience?.isCurrent !== undefined ? experience?.isCurrent : false,
-        },
+            isCurrent: experience?.isCurrent !== undefined ? experience?.isCurrent : false
+        }
     })
 
     const { control, handleSubmit, watch, setValue } = form
@@ -89,15 +89,14 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
     async function onSubmitCreate(values: z.infer<typeof formSchema>) {
         try {
             const startMonthInt = convertMonthTextToInt(values.startMonth)
-
             const apiData: ExperienceInsert = {
                 userId: user!.id,
                 ...values,
                 startMonth: startMonthInt,
                 startYear: parseInt(values.startYear),
-                experienceType: values.experience_type as ExperienceType,
+                experienceType: values.experienceType as ExperienceType,
                 portfolios: portfolioId ? [portfolioId] : [],
-                description: values.description ?? undefined,
+                description: values.description ?? undefined
             }
             // @ts-ignore
             if (values.endMonth) {
@@ -107,7 +106,7 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
             // @ts-ignore
             if (values.endYear) {
                 // @ts-ignore
-                apiData.end_year = parseInt(values.endYear)
+                apiData.endYear = parseInt(values.endYear)
             }
             const res = await createUserExperience(apiData)
             if (res.status !== 201) {
@@ -118,7 +117,7 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
             setAlert({
                 show: true,
                 type: 'danger',
-                message: 'Looks like something went wrong. Please try again.',
+                message: 'Looks like something went wrong. Please try again.'
             })
         }
     }
@@ -133,9 +132,9 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
                 ...values,
                 startMonth: startMonthInt,
                 startYear: parseInt(values.startYear),
-                experienceType: values.experience_type as ExperienceType,
+                experienceType: values.experienceType as ExperienceType,
                 portfolios: portfolioId ? [portfolioId] : [],
-                description: values.description ?? undefined,
+                description: values.description ?? undefined
             }
             // @ts-ignore
             if (values.endMonth) {
@@ -145,10 +144,14 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
             // @ts-ignore
             if (values.endYear) {
                 // @ts-ignore
-                apiData.end_year = parseInt(values.endYear)
+                apiData.endYear = parseInt(values.endYear)
             }
+
+            console.log({ apiData })
+
             // API call to create user education
             const res = await editUserExperience(apiData)
+
             if (res.status !== 200) {
                 throw new Error('Something went wrong')
             }
@@ -158,17 +161,14 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
             setAlert({
                 show: true,
                 type: 'danger',
-                message: 'Looks like something went wrong. Please try again.',
+                message: 'Looks like something went wrong. Please try again.'
             })
         }
     }
 
     return (
         <>
-            <Alerter
-                alert={alert}
-                className="mb-4"
-            />
+            <Alerter alert={alert} className="mb-4" />
             <Form {...form}>
                 <form
                     // @ts-ignore
@@ -206,7 +206,7 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
                     <div className="flex gap-4">
                         <FormField
                             control={control}
-                            name="experience_type"
+                            name="experienceType"
                             render={({ field }) => (
                                 <FormItem className="w-1/2">
                                     <FormLabel>Experience Type</FormLabel>
@@ -335,11 +335,7 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
                     />
                     <div className="flex justify-end gap-2">
                         {Cancel && Cancel}
-                        <Button
-                            type="submit"
-                            loading={form.formState.isSubmitting}
-                            loadingText="Submitting..."
-                        >
+                        <Button type="submit" loading={form.formState.isSubmitting} loadingText="Submitting...">
                             Submit
                         </Button>
                     </div>

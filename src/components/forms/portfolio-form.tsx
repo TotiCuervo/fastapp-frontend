@@ -19,23 +19,23 @@ import { Checkbox } from '../ui/checkbox'
 
 const formSchema = z.object({
     name: z.string().min(2, {
-        message: 'Portfolio must be at least 2 characters.',
+        message: 'Portfolio must be at least 2 characters.'
     }),
     description: z
         .string()
         .min(2, {
-            message: 'Description must be at least 2 characters.',
+            message: 'Description must be at least 2 characters.'
         })
         .optional(),
     email: z.string().email({
-        message: 'Please enter a valid email address.',
+        message: 'Please enter a valid email address.'
     }),
     phone: z
         .string()
-        .min(10, {
-            message: 'Please enter a valid phone number.',
+        .refine((value) => value === undefined || value.trim().length === 0 || value.trim().length >= 10, {
+            message: 'Please enter a valid phone number.'
         })
-        .optional(),
+        .optional()
 })
 
 interface PortfolioFormProps {
@@ -49,7 +49,7 @@ export default function PortfolioForm({
     onSuccessfullSubmit,
     Cancel,
     portfolio,
-    saveButtonText = 'Submit',
+    saveButtonText = 'Submit'
 }: PortfolioFormProps) {
     const router = useRouter()
     const { user } = useUserContext()
@@ -62,8 +62,8 @@ export default function PortfolioForm({
             name: portfolio?.name || 'My Portfolio',
             description: portfolio?.description || undefined,
             email: portfolio ? portfolio.email : user!.email,
-            phone: portfolio && portfolio.phone,
-        },
+            phone: portfolio && portfolio.phone
+        }
     })
 
     const onSubmit = portfolio ? updateSubmit : createSubmit
@@ -71,7 +71,7 @@ export default function PortfolioForm({
     async function createSubmit(values: z.infer<typeof formSchema>) {
         try {
             const res = await createPortfolio({
-                ...values,
+                ...values
             })
 
             if (res.status !== 201) {
@@ -79,11 +79,12 @@ export default function PortfolioForm({
                 return
             }
             onSuccessfullSubmit && onSuccessfullSubmit(res.data.data)
-        } catch {
+        } catch (e) {
+            console.log(e)
             setAlert({
                 show: true,
                 type: 'danger',
-                message: 'Looks like something went wrong. Please try again.',
+                message: 'Looks like something went wrong. Please try again.'
             })
         }
     }
@@ -92,7 +93,7 @@ export default function PortfolioForm({
         try {
             const res = await UpdatePortfolio({
                 ...portfolio!,
-                ...values,
+                ...values
             })
 
             if (res.status !== 200) {
@@ -105,7 +106,7 @@ export default function PortfolioForm({
             setAlert({
                 show: true,
                 type: 'danger',
-                message: 'Looks like something went wrong. Please try again.',
+                message: 'Looks like something went wrong. Please try again.'
             })
         }
     }
@@ -114,10 +115,7 @@ export default function PortfolioForm({
         <>
             <Alerter alert={alert} />
             <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4"
-                >
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     <FormField
                         control={form.control}
                         name="name"
@@ -178,11 +176,7 @@ export default function PortfolioForm({
                     )}
                     <div className="flex justify-end gap-4">
                         {Cancel && Cancel}
-                        <Button
-                            type="submit"
-                            loading={form.formState.isSubmitting}
-                            loadingText="Submitting..."
-                        >
+                        <Button type="submit" loading={form.formState.isSubmitting} loadingText="Submitting...">
                             {saveButtonText}
                         </Button>
                     </div>
