@@ -7,12 +7,14 @@ import { User } from '@/lib/types/user'
 interface UserContextValue {
     user: User | null
     setUser: (user: User | null) => void
+    loading: boolean
 }
 
 // Create the initial context value
 const initialUserContextValue: UserContextValue = {
     user: null,
     setUser: () => {},
+    loading: true,
 }
 
 // Create the context
@@ -23,8 +25,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const { data: session } = useSession()
 
     const [user, setUser] = useState<User | null>(null)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        setLoading(true)
         if (!session || !session.user) {
             setUser(null)
             return
@@ -32,7 +36,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         setUser(session.user)
     }, [session])
 
-    return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 1000)
+    }, [user])
+
+    return <UserContext.Provider value={{ user, setUser, loading }}>{children}</UserContext.Provider>
 }
 
 // Create the useUser hook

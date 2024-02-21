@@ -56,7 +56,7 @@ export default function AddEducationForm({ onSuccessfullSubmit, Cancel, portfoli
             school: education?.school || '',
             degree: education?.degree || '',
             fieldOfStudy: education?.fieldOfStudy || '',
-            startMonth: education?.startedOn.monthName.short || '',
+            startMonth: education?.startedOn.monthName.full || '',
             startYear: education?.startedOn.year.toString() || '',
             endMonth: education?.endedOn.monthName.full || '',
             endYear: education?.endedOn.year.toString() || '',

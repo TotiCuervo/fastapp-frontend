@@ -1,18 +1,27 @@
 'use client'
 
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import AddEducationForm from '../forms/add-education-form'
 import Button from '../buttons/button'
 import Portfolio from '@/lib/types/portfolio/portfolio'
 import InternalOpenProps from '@/lib/types/misc/internal-dialog-props'
 import useInternalOpen from '@/lib/hooks/use-internal-open'
-import PortfolioForm from '../forms/portfolio-form'
+import Education from '@/lib/types/education/education'
 
-interface ModalProps extends InternalOpenProps {
-    portfolio?: Portfolio
-    onSuccessfullSubmit?: (portfolio: Portfolio) => void
+interface AddEducationModalProps extends InternalOpenProps {
+    portfolioId?: Portfolio['id']
+    onSuccessfullSubmit?: () => void
+    education?: Education
 }
 
-export default function PortfolioFormModal({ trigger, open, setOpen, onSuccessfullSubmit, portfolio }: ModalProps) {
+export default function EducationFormModal({
+    trigger,
+    portfolioId,
+    open,
+    setOpen,
+    onSuccessfullSubmit,
+    education,
+}: AddEducationModalProps) {
     const { internalOpen, handleSetOpen } = useInternalOpen({ open, setOpen })
 
     return (
@@ -21,12 +30,12 @@ export default function PortfolioFormModal({ trigger, open, setOpen, onSuccessfu
             onOpenChange={handleSetOpen}
         >
             {trigger && <DialogTrigger>{trigger}</DialogTrigger>}
-            <DialogContent>
+            <DialogContent className="max-w-2xl">
                 <DialogHeader>
-                    <DialogTitle>{portfolio ? 'Edit' : 'Add'} Portfolio</DialogTitle>
+                    <DialogTitle>{education ? 'Edit' : 'Add'} Education</DialogTitle>
                 </DialogHeader>
                 <div className="pt-4">
-                    <PortfolioForm
+                    <AddEducationForm
                         Cancel={
                             <DialogClose>
                                 <Button
@@ -37,12 +46,12 @@ export default function PortfolioFormModal({ trigger, open, setOpen, onSuccessfu
                                 </Button>
                             </DialogClose>
                         }
-                        onSuccessfullSubmit={(portfolio) => {
+                        onSuccessfullSubmit={() => {
                             handleSetOpen(false)
-                            onSuccessfullSubmit && onSuccessfullSubmit(portfolio)
+                            onSuccessfullSubmit && onSuccessfullSubmit()
                         }}
-                        portfolio={portfolio}
-                        saveButtonText="Save"
+                        education={education}
+                        portfolioId={portfolioId}
                     />
                 </div>
             </DialogContent>

@@ -14,9 +14,7 @@ export default function CopiableCard({ children, className, copyText, hoveringCh
     const [isCopied, setIsCopied] = useState(false)
 
     function copyToClipboard() {
-        console.log('hit')
         if (hoveringChild) return
-        console.log({ hoveringChild })
         navigator.clipboard.writeText(copyText)
         setIsCopied(true)
         toast.success(`"${copyText}" copied to clipboard!`)
@@ -25,7 +23,7 @@ export default function CopiableCard({ children, className, copyText, hoveringCh
     return (
         <div
             className={twMerge(
-                'group/card relative flex cursor-pointer flex-col rounded-lg border px-4 py-2 transition',
+                'group/card relative flex cursor-pointer flex-col rounded-lg border bg-card px-4 py-2 transition',
                 hoveringChild
                     ? null
                     : isCopied
@@ -52,13 +50,19 @@ export default function CopiableCard({ children, className, copyText, hoveringCh
                           : 'group-hover/card:text-fastapp-500'
                 )}
                 style={{
-                    left: 'calc(100% + 15px)'
+                    left: 'calc(100% + 15px)',
                 }}
             >
                 {!isCopied ? (
-                    <ClipboardIcon size={15} className="transition group-active/card:rotate-[20deg]" />
+                    <ClipboardIcon
+                        size={15}
+                        className="transition group-active/card:rotate-[20deg]"
+                    />
                 ) : (
-                    <ThumbsUpIcon size={15} className="transition group-active/card:rotate-[20deg]" />
+                    <ThumbsUpIcon
+                        size={15}
+                        className="transition group-active/card:rotate-[20deg]"
+                    />
                 )}
             </div>
         </div>

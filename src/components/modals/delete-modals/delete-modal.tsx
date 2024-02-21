@@ -53,7 +53,7 @@ export default function DeleteDialogModal({
             onOpenChange={handleSetOpen}
         >
             {trigger && <DialogTrigger className={triggerClassName}>{trigger}</DialogTrigger>}
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-lg">
                 <DialogHeader>
                     <DialogTitle>Delete {title}</DialogTitle>
                 </DialogHeader>
