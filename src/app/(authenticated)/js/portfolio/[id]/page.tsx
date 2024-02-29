@@ -16,6 +16,11 @@ import usePortfoliosQueryInvalidation from '@/lib/query/portfolios/invalidations
 import TypeFilterItems from '../../components/shared/type-filter-items'
 import portfolioIdRoute from './_route'
 import SkillFormModal from '@/components/modals/skill-form-modal'
+import PortfolioFilterItems from '../../components/shared/portfolio-filter-items'
+import EmptyCard from './components/empty-card'
+import ExperienceIcon from '@/components/icons/experience-icon'
+import EducationIcon from '@/components/icons/education-icon'
+import SkillIcon from '@/components/icons/skill-icon'
 
 interface IProps {
     params: {
@@ -77,7 +82,7 @@ export default function page({ params }: IProps) {
             <PageHeader portfolio={data} invalidation={bothInvalidation} />
             <div className="flex flex-col gap-8 md:flex-row">
                 <div className="w-full md:w-4/12 lg:w-2/12">
-                    <TypeFilterItems route={(type) => portfolioIdRoute({ id, ...type })} />
+                    <PortfolioFilterItems route={(type) => portfolioIdRoute({ id, ...type })} />
                 </div>
                 <div className="w-full md:w-8/12 lg:w-8/12">
                     <div className="flex flex-col gap-10">
@@ -121,7 +126,19 @@ export default function page({ params }: IProps) {
                                     />
                                 ))}
                             </div>
-                            {data.experience.length === 0 && <p className="w-full text-center">No experiences, yet</p>}
+                            {data.experience.length === 0 && (
+                                <EmptyCard
+                                    Icon={ExperienceIcon}
+                                    item={'experience'}
+                                    AddModal={({ ...props }: any) => (
+                                        <AddExperienceModal
+                                            {...props}
+                                            portfolioId={intId}
+                                            onSuccessfullSubmit={invalidation}
+                                        />
+                                    )}
+                                />
+                            )}
                         </Section>
                         <Section
                             title="Education"
@@ -141,7 +158,19 @@ export default function page({ params }: IProps) {
                                     invalidation={invalidation}
                                 />
                             ))}
-                            {data.education.length === 0 && <p className="w-full text-center">No education, yet</p>}
+                            {data.education.length === 0 && (
+                                <EmptyCard
+                                    Icon={EducationIcon}
+                                    item={'education'}
+                                    AddModal={({ ...props }: any) => (
+                                        <AddEducationModal
+                                            {...props}
+                                            portfolioId={intId}
+                                            onSuccessfullSubmit={invalidation}
+                                        />
+                                    )}
+                                />
+                            )}
                         </Section>
                         <Section
                             title="Skills"
@@ -152,7 +181,7 @@ export default function page({ params }: IProps) {
                                     onSuccessfullSubmit={invalidation}
                                 />
                             }
-                            showIf="education"
+                            showIf="skills"
                         >
                             {data.education.map((education, index) => (
                                 <EducationCard
@@ -161,7 +190,19 @@ export default function page({ params }: IProps) {
                                     invalidation={invalidation}
                                 />
                             ))}
-                            {data.education.length === 0 && <p className="w-full text-center">No skills, yet</p>}
+                            {data.skills.length === 0 && (
+                                <EmptyCard
+                                    Icon={SkillIcon}
+                                    item={'skill'}
+                                    AddModal={({ ...props }: any) => (
+                                        <SkillFormModal
+                                            {...props}
+                                            portfolioId={intId}
+                                            onSuccessfullSubmit={invalidation}
+                                        />
+                                    )}
+                                />
+                            )}
                         </Section>
                     </div>
                 </div>

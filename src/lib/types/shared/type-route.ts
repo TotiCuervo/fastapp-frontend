@@ -1,3 +1,3 @@
-type TypeRoute = 'education' | 'experience'
+type TypeRoute = 'education' | 'experience' | 'skills'
 
 export default TypeRoute

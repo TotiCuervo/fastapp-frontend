@@ -111,7 +111,7 @@ export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, ed
                 <form onSubmit={form.handleSubmit(submitFunction)} className="space-y-4">
                     <FormField
                         control={form.control}
-                        name="skillSet"
+                        name="skillSets"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Skill</FormLabel>

@@ -9,7 +9,7 @@ import {
     SelectItem,
     SelectLabel,
     SelectTrigger,
-    SelectValue,
+    SelectValue
 } from '@/components/ui/select'
 import { useRouter } from 'next/navigation'
 
@@ -36,33 +36,20 @@ export default function FilterItems({ items, active }: FilterItemsProps) {
         <>
             <div className="hidden w-full flex-row gap-2 sm:flex md:flex-col">
                 {items.map((item, index) => (
-                    <Link
-                        href={item.route}
-                        key={`${index} ${item.label}`}
-                    >
-                        <FilterButton
-                            Icon={item.Icon}
-                            label={item.label}
-                            active={active(item)}
-                        />
+                    <Link href={item.route} key={`${index} ${item.label}`}>
+                        <FilterButton Icon={item.Icon} label={item.label} active={active(item)} />
                     </Link>
                 ))}
             </div>
             <div className="w-full sm:hidden">
-                <Select
-                    value={selected}
-                    onValueChange={onSelectChange}
-                >
+                <Select value={selected} onValueChange={onSelectChange}>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="All Items" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
                             {items.map((item, index) => (
-                                <SelectItem
-                                    key={`${index} ${item.label}`}
-                                    value={item.label}
-                                >
+                                <SelectItem key={`${index} ${item.label}`} value={item.label}>
                                     {item.label}
                                 </SelectItem>
                             ))}
