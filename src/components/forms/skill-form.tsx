@@ -9,10 +9,6 @@ import Button from '@/components/buttons/button'
 import React, { useState } from 'react'
 import { Alert } from '@/lib/types/alert'
 import Alerter from '@/components/alerts/alerter'
-import DegreeTypeCombobox from '../combobox/degree-type-combobox'
-import MonthSelect from '../select/month-select'
-import YearSelect from '../select/year-select'
-import createUserEducation from '@/lib/endpoints/education/create-user-education'
 import { useUserContext } from '@/context/UserContext'
 import convertMonthTextToInt from '@/lib/method/convert-month-text-to-int'
 import Portfolio from '@/lib/types/portfolio/portfolio'
@@ -20,6 +16,8 @@ import capitalize from '@/lib/method/capitalize'
 import Education from '@/lib/types/education/education'
 import updateUserEducation from '@/lib/endpoints/education/update-user-education'
 import createUserSkill from '@/lib/endpoints/skill/create-user-skill'
+import useSkillsQuery from '@/lib/query/skills/useSkillsQuery'
+import Combobox, { ComboBoxOptions } from '../combobox/combobox'
 
 const formSchema = z.object({
     skillSets: z.string().min(1, {
@@ -36,6 +34,14 @@ interface FormProps {
 
 export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, education }: FormProps) {
     const { user } = useUserContext()
+
+    const { data: skills = [] } = useSkillsQuery()
+    const options: ComboBoxOptions = skills.map((skill) => {
+        return {
+            value: skill.id.toString(),
+            label: skill.skillSet
+        }
+    })
 
     const [alert, setAlert] = useState<Alert>()
 
@@ -116,7 +122,7 @@ export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, ed
                             <FormItem>
                                 <FormLabel>Skill</FormLabel>
                                 <FormControl>
-                                    <Input {...field} />
+                                    <Combobox {...field} options={options} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
