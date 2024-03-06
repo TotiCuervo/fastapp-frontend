@@ -1,3 +1,4 @@
 export const Keys = {
-    skills: () => ['skills']
+    skills: () => ['skills'],
+    search: (search: string) => ['skills', search],
 }

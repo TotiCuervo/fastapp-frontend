@@ -8,9 +8,9 @@ interface SkillsQueryProps {
     enabled?: boolean
 }
 
-export default function useSkillsQuery({ params, enabled }: SkillsQueryProps = {}) {
+export default function useSkillsSearchQuery({ params, enabled }: SkillsQueryProps = {}) {
     return useQuery<Skill[]>({
-        queryKey: Keys.skills(),
+        queryKey: Keys.search(params?.skillSet || ''),
         queryFn: () => fetch(params),
         enabled: enabled,
     })

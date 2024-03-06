@@ -12,7 +12,7 @@ export default function EmptyCard({ Icon, item, AddModal }: IProps) {
     return (
         <>
             <div
-                className="group flex cursor-pointer flex-col items-center rounded-xl border-[1.5px] border-dashed border-foreground/40 p-4 transition hover:border-foreground hover:bg-card"
+                className="hovered-bg group flex cursor-pointer flex-col items-center rounded-xl border-[1.5px] border-dashed border-foreground/40 p-4 transition hover:border-foreground"
                 onClick={() => setOpen(true)}
             >
                 <Icon className="text-foreground/40 transition group-hover:text-foreground" />
@@ -22,7 +22,10 @@ export default function EmptyCard({ Icon, item, AddModal }: IProps) {
                     <Button onClick={() => setOpen(true)}>Add {item}</Button>
                 </div>
             </div>
-            <AddModal open={open} setOpen={setOpen} />
+            <AddModal
+                open={open}
+                setOpen={setOpen}
+            />
         </>
     )
 }

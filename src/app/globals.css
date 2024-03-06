@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 98;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
@@ -28,32 +28,24 @@
   }
   
   .dark {
-    --background: 0 7% 8%;
-    --foreground: 60 9% 98%;
-
-    --card: 0 6% 10%;
-    --card-foreground: 60 9% 98%;
-
-    --popover: 0 6% 10%;
-    --popover-foreground: 60 9% 98%;
-
+    --background: 20 14.3% 4.1%;
+    --foreground: 0 0% 95%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
     --primary: 1 67% 51%;
     --primary-foreground: 60 9% 98%;
-
-    --secondary: 0 8% 19%;
-    --secondary-foreground: 60 9% 98%;
-
-    --muted: 0 7% 29%;
-    --muted-foreground: 0 8% 49%;
-
-    --accent: 1 71% 19%;
-    --accent-foreground: 60 9% 98%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 8% 12%;
-    --input: 0 9% 18%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
     --ring: 1 67% 40%;
   }
 }
@@ -70,4 +62,8 @@
 
 .transition {
   @apply transition-all duration-150 ease-in-out;
+}
+
+.hovered-bg {
+  @apply hover:bg-muted/70 transition;
 }

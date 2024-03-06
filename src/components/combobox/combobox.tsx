@@ -20,9 +20,10 @@ export interface ComboBoxProps {
     value: string | null
     options: ComboBoxOptions
     onChange: (value: string) => void
+    onSearchChange?: (value: string) => void
 }
 
-export default function Combobox({ value, options, onChange }: ComboBoxProps) {
+export default function Combobox({ value, options, onChange, onSearchChange }: ComboBoxProps) {
     const [open, setOpen] = React.useState(false)
 
     return (
@@ -45,12 +46,15 @@ export default function Combobox({ value, options, onChange }: ComboBoxProps) {
             </PopoverTrigger>
             <PopoverContent className="PopoverContent p-0">
                 <Command>
-                    <CommandInput placeholder="Search..." />
+                    <CommandInput
+                        onValueChange={onSearchChange}
+                        placeholder="Search..."
+                    />
                     <CommandEmpty>No option found.</CommandEmpty>
-                    <CommandGroup>
-                        {options.map((option) => (
+                    <CommandGroup className="max-h-[200px] overflow-y-auto">
+                        {options.map((option, index) => (
                             <CommandItem
-                                key={option.value}
+                                key={`${option.value}-${index}-${value}-${options.length}`}
                                 value={option.value}
                                 onSelect={(currentValue) => {
                                     onChange(currentValue === value ? '' : currentValue)

@@ -21,6 +21,7 @@ import EmptyCard from './components/empty-card'
 import ExperienceIcon from '@/components/icons/experience-icon'
 import EducationIcon from '@/components/icons/education-icon'
 import SkillIcon from '@/components/icons/skill-icon'
+import SkillPill from '@/components/skills/skill-pill'
 
 interface IProps {
     params: {
@@ -38,20 +39,20 @@ const AddButton = () => <Button variant="ghost">Add</Button>
 const basicInformation: BasicInfo[] = [
     {
         title: 'Email',
-        content: 'cuervor14@gmail.com'
+        content: 'cuervor14@gmail.com',
     },
     {
         title: 'Phone',
-        content: '123-456-7890'
+        content: '123-456-7890',
     },
     {
         title: 'Birthday',
-        content: '01/01/1990'
+        content: '01/01/1990',
     },
     {
         title: 'Location',
-        content: 'Columbus, OH, USA'
-    }
+        content: 'Columbus, OH, USA',
+    },
 ]
 
 export default function page({ params }: IProps) {
@@ -82,7 +83,10 @@ export default function page({ params }: IProps) {
             <div className="flex justify-center">
                 <div className="w-full md:w-8/12 lg:w-8/12">
                     <div className="flex flex-col gap-10">
-                        <PageHeader portfolio={data} invalidation={bothInvalidation} />
+                        <PageHeader
+                            portfolio={data}
+                            invalidation={bothInvalidation}
+                        />
                         <Section
                             title="Basic Information"
                             addModal={
@@ -92,10 +96,14 @@ export default function page({ params }: IProps) {
                                     onSuccessfullSubmit={invalidation}
                                 />
                             }
+                            toggleable
                         >
                             <div className="flex flex-col gap-4">
                                 {basicInformation.map((info, index) => (
-                                    <div key={index} className="flex flex-col">
+                                    <div
+                                        key={index}
+                                        className="flex flex-col"
+                                    >
                                         <span className="font-semibold">{info.title}</span>
                                         <CT>{info.content}</CT>
                                     </div>
@@ -176,17 +184,16 @@ export default function page({ params }: IProps) {
                                     trigger={<AddButton />}
                                     portfolioId={intId}
                                     onSuccessfullSubmit={invalidation}
+                                    skills={data.skills}
                                 />
                             }
                             showIf="skills"
                         >
-                            {data.education.map((education, index) => (
-                                <EducationCard
-                                    key={`education ${index}`}
-                                    education={education}
-                                    invalidation={invalidation}
-                                />
-                            ))}
+                            <div className="flex flex-wrap gap-4">
+                                {data.skills.map((skill, index) => (
+                                    <SkillPill key={`skill ${index}`}>Howdy</SkillPill>
+                                ))}
+                            </div>
                             {data.skills.length === 0 && (
                                 <EmptyCard
                                     Icon={SkillIcon}

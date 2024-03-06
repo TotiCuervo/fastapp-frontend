@@ -1,9 +1,11 @@
+import Skill from '../skills/skill'
 import Update from '../update'
 import Portfolio from './portfolio'
 
-type PortfolioUpdate = Update<Portfolio> & {
+type PortfolioUpdate = Update<Omit<Portfolio, 'skills'>> & {
     id: Portfolio['id']
-    name: string
+    name?: string
+    skills?: Skill['id'][]
 }
 
 export default PortfolioUpdate

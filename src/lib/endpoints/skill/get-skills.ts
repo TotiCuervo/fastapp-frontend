@@ -1,7 +1,15 @@
 import client from '@/lib/client'
-import Skill from '@/lib/types/skills/skill'
-import { AxiosPromise } from 'axios'
 
-export default function getSkills() {
-    return client.get(`/skills`)
+export interface GetSkillsParams {
+    skillSet?: string
+}
+
+export default function getSkills({ skillSet }: GetSkillsParams = {}) {
+    return client.get(`/skills`, {
+        params: skillSet
+            ? {
+                  filter: skillSet,
+              }
+            : undefined,
+    })
 }
