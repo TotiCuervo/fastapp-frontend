@@ -32,9 +32,9 @@ export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, sk
 
     const { data: searchedSkills = defaultSkills } = useSkillsSearchQuery({
         params: {
-            skillSet: debouncedSearchSkill === '' ? undefined : searchSkill,
+            skillSet: debouncedSearchSkill === '' ? undefined : searchSkill
         },
-        enabled: Boolean(debouncedSearchSkill),
+        enabled: Boolean(debouncedSearchSkill)
     })
 
     const filterSkills = debouncedSearchSkill === '' ? defaultSkills : searchedSkills
@@ -44,13 +44,13 @@ export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, sk
         .map((skill) => {
             return {
                 value: skill.skillSet,
-                label: skill.skillSet,
+                label: skill.skillSet
             }
         })
 
     const [alert, setAlert] = useState<Alert>()
 
-    const submitFunction = skills ? updateSubmit : createSubmit
+    const submitFunction = createSubmit
 
     function addToSkills(skill: string) {
         const skillToAdd = filterSkills.find((s) => s.skillSet.toUpperCase() === skill.toUpperCase())
@@ -62,7 +62,7 @@ export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, sk
             const res = await createUserSkill({
                 userId: user!.id,
                 skillSets: [...skillsToAdd.map((s) => s.id)],
-                portfolios: portfolioId ? [portfolioId] : undefined,
+                portfolios: portfolioId ? [portfolioId] : undefined
             })
 
             if (res.status !== 201) {
@@ -74,7 +74,7 @@ export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, sk
             setAlert({
                 show: true,
                 type: 'danger',
-                message: 'Looks like something went wrong. Please try again.',
+                message: 'Looks like something went wrong. Please try again.'
             })
         }
     }
@@ -84,7 +84,7 @@ export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, sk
             const res = await updateUserSkill({
                 userId: user!.id,
                 skillSets: [...skillsToAdd.map((s) => s.id)],
-                portfolios: portfolioId ? [portfolioId] : undefined,
+                portfolios: portfolioId ? [portfolioId] : undefined
             })
 
             if (res.status !== 201) {
@@ -96,26 +96,18 @@ export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, sk
             setAlert({
                 show: true,
                 type: 'danger',
-                message: 'Looks like something went wrong. Please try again.',
+                message: 'Looks like something went wrong. Please try again.'
             })
         }
     }
 
     return (
         <>
-            <Alerter
-                alert={alert}
-                className="mt-4"
-            />
+            <Alerter alert={alert} className="mt-4" />
             <div className="space-y-4">
                 <div>
                     <p className="mb-1 text-sm font-semibold">Search</p>
-                    <Combobox
-                        value={''}
-                        options={options}
-                        onChange={addToSkills}
-                        onSearchChange={setSearchSkill}
-                    />
+                    <Combobox value={''} options={options} onChange={addToSkills} onSearchChange={setSearchSkill} />
                 </div>
                 {skillsToAdd.length > 0 && (
                     <div className="w-full">
@@ -135,11 +127,7 @@ export default function SkillForm({ onSuccessfullSubmit, Cancel, portfolioId, sk
                 )}
                 <div className="flex justify-end gap-2">
                     {Cancel && Cancel}
-                    <Button
-                        type="submit"
-                        loadingText="Saving..."
-                        onClick={submitFunction}
-                    >
+                    <Button type="submit" loadingText="Saving..." onClick={submitFunction}>
                         Save
                     </Button>
                 </div>

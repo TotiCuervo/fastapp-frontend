@@ -79,18 +79,12 @@ export default function page() {
     return (
         <div className="flex flex-col">
             <div className="flex w-full justify-center gap-2 md:justify-start lg:w-1/2">
-                <SearchBar
-                    value={search}
-                    onChange={setSearch}
-                />
+                <SearchBar value={search} onChange={setSearch} />
                 <NewDropdown />
             </div>
-            <div className="flex w-full flex-col gap-4 pt-4 md:pt-10 lg:w-1/2">
+            <div className="flex w-full flex-col gap-4 pt-4">
                 {filteredData.map((data, index) => (
-                    <DataRender
-                        key={`${data.type} ${data.object.id} ${index}`}
-                        item={data}
-                    />
+                    <DataRender key={`${data.type} ${data.object.id} ${index}`} item={data} />
                 ))}
                 {filteredData.length === 0 && <p>No items found</p>}
             </div>

@@ -18,7 +18,7 @@ export default function Section({ title, children, addModal, showIf, toggleable 
     const searchParams = useSearchParams()
     const typeParam = searchParams.get('type')
 
-    const [isHidden, setIsHidden] = useState(false)
+    const [isHidden, setIsHidden] = useState(true)
 
     if (typeParam !== null && typeParam !== showIf) {
         return null
