@@ -7,20 +7,23 @@ import CardOptionsDropdown from '../../../../../../components/dropdown/card-opti
 import Portfolio from '@/lib/types/portfolio/portfolio'
 import ExperienceFormModal from '@/components/modals/experience-form-modal'
 import ExperienceDeleteModal from '@/components/modals/delete-modals/modals/experience-delete-modal'
+import ExperienceIcon from '@/components/icons/experience-icon'
 
 interface IProps {
     experience: Experience
     invalidation?: () => void
     portfolioId?: Portfolio['id']
+    first?: boolean
 }
 
 export default function ExperienceCard({ experience, invalidation, portfolioId }: IProps) {
     const { position, location, experienceType } = experience
     const company = experience.company.companyName
     const start = `${experience.startedOn.monthName.short} ${experience.startedOn.year.toString()}`
-    const end = experience.isCurrent
-        ? 'Present'
-        : `${experience.endedOn?.monthName?.short} ${experience.endedOn?.year?.toString()}`
+    const end =
+        experience.endedOn?.month === null && experience.endedOn?.year === null
+            ? 'Present'
+            : `${experience.endedOn?.monthName?.short} ${experience.endedOn?.year?.toString()}`
 
     const copyText = `${position}. ${company}, ${location}. ${experienceType} from ${start} to ${end}`
     const [hoveringChild, setHoveringChild] = useState(false)
@@ -31,7 +34,10 @@ export default function ExperienceCard({ experience, invalidation, portfolioId }
         <>
             <CopiableCard copyText={copyText} hoveringChild={hoveringChild}>
                 <div className="flex justify-between">
-                    <i className="pb-2">Experience</i>
+                    <div className="flex items-center gap-1 pb-2 text-sm text-foreground/70">
+                        <ExperienceIcon className="size-4 text-foreground/60" />
+                        <p>Experience</p>
+                    </div>
                     <CardOptionsDropdown
                         handleEditClick={() => setOpenExperienceModal(true)}
                         handleDeleteClick={() => setOpenDeleteModal(true)}

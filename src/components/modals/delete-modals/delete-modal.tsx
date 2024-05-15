@@ -7,7 +7,7 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
+    DialogTrigger
 } from '@/components/ui/dialog'
 import Button from '@/components/buttons/button'
 import useInternalOpen from '@/lib/hooks/use-internal-open'
@@ -27,7 +27,7 @@ export default function DeleteDialogModal({
     trigger,
     triggerClassName,
     title,
-    onDelete,
+    onDelete
 }: DeleteDialogModalProps) {
     const { internalOpen, handleSetOpen } = useInternalOpen({ open, setOpen })
     const [error, setError] = useState<Alert | undefined>(undefined)
@@ -42,16 +42,15 @@ export default function DeleteDialogModal({
             setError({
                 message: 'An error occurred while deleting',
                 type: 'danger',
-                show: true,
+                show: true
             })
+        } finally {
+            setDeleting(false)
         }
     }
 
     return (
-        <Dialog
-            open={internalOpen}
-            onOpenChange={handleSetOpen}
-        >
+        <Dialog open={internalOpen} onOpenChange={handleSetOpen}>
             {trigger && <DialogTrigger className={triggerClassName}>{trigger}</DialogTrigger>}
             <DialogContent className="max-w-lg">
                 <DialogHeader>
@@ -71,11 +70,7 @@ export default function DeleteDialogModal({
                         <Button variant="outline">Cancel</Button>
                     </DialogClose>
                     <DialogClose onClick={handleDelete}>
-                        <Button
-                            variant="destructive"
-                            loading={deleting}
-                            loadingText="Deleting..."
-                        >
+                        <Button variant="destructive" loading={deleting} loadingText="Deleting...">
                             Delete
                         </Button>
                     </DialogClose>

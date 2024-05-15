@@ -69,7 +69,7 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
             endMonth: experience?.endedOn?.monthName?.full ?? null,
             endYear: experience?.endedOn?.year?.toString() ?? null,
             description: experience?.description ?? '',
-            isCurrent: experience?.isCurrent !== undefined ? experience?.isCurrent : false
+            isCurrent: experience?.endedOn?.month === null && experience?.endedOn?.year === null
         }
     })
 
@@ -108,6 +108,7 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
                 // @ts-ignore
                 apiData.endYear = parseInt(values.endYear)
             }
+
             const res = await createUserExperience(apiData)
             if (res.status !== 201) {
                 throw new Error('Something went wrong')
@@ -136,18 +137,24 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
                 portfolios: portfolioId ? [portfolioId] : [],
                 description: values.description ?? undefined
             }
+
             // @ts-ignore
-            if (values.endMonth) {
+            if (!values.isCurrent && values.endMonth) {
                 // @ts-ignore
                 apiData.endMonth = convertMonthTextToInt(values.endMonth)
             }
             // @ts-ignore
-            if (values.endYear) {
+            if (!values.isCurrent && values.endYear) {
                 // @ts-ignore
                 apiData.endYear = parseInt(values.endYear)
             }
 
-            console.log({ apiData })
+            if (values.isCurrent) {
+                // @ts-ignore
+                apiData.endMonth = null
+                // @ts-ignore
+                apiData.endYear = null
+            }
 
             // API call to create user education
             const res = await editUserExperience(apiData)
@@ -155,6 +162,7 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
             if (res.status !== 200) {
                 throw new Error('Something went wrong')
             }
+
             onSuccessfullSubmit && onSuccessfullSubmit()
         } catch (error) {
             console.log({ error })

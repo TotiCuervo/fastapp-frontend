@@ -6,6 +6,7 @@ import AddEducationModal from '@/components/modals/education-form-modal'
 import EducationDeleteModal from '@/components/modals/delete-modals/modals/education-delete-modal'
 import Education from '@/lib/types/education/education'
 import React, { useState } from 'react'
+import EducationIcon from '@/components/icons/education-icon'
 
 interface IProps {
     education: Education
@@ -24,28 +25,22 @@ export default function EducationCard({ education, invalidation }: IProps) {
 
     return (
         <>
-            <CopiableCard
-                copyText="Education"
-                hoveringChild={hoveringChild}
-            >
+            <CopiableCard copyText="Education" hoveringChild={hoveringChild}>
                 <div className="flex w-full justify-between">
-                    <i className="pb-1">Education</i>
+                    <div className="flex items-center gap-1 pb-2 text-sm text-foreground/70">
+                        <EducationIcon className="size-5 text-foreground/60" />
+                        <p>Education</p>
+                    </div>
                     <CardOptionsDropdown
                         handleDeleteClick={() => setOpenDeleteModal(true)}
                         handleEditClick={() => setOpenExperienceModal(true)}
                     />
                 </div>
-                <CT
-                    className="font-semibold"
-                    hovering={setHoveringChild}
-                >
+                <CT className="font-semibold" hovering={setHoveringChild}>
                     {school}
                 </CT>
                 <CT hovering={setHoveringChild}>{degree}</CT>
-                <CT
-                    className="font-light"
-                    hovering={setHoveringChild}
-                >{`${start} - ${end}`}</CT>
+                <CT className="font-light" hovering={setHoveringChild}>{`${start} - ${end}`}</CT>
             </CopiableCard>
             <AddEducationModal
                 open={openExperienceModal}

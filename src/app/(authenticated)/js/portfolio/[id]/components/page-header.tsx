@@ -6,11 +6,36 @@ import jsDashboardRoute from '@/lib/routes/jsDashboardRoute'
 import Portfolio from '@/lib/types/portfolio/portfolio'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import CT from '@/components/copy/copiable-text'
 
 interface IProps {
     portfolio: Portfolio
     invalidation: () => void
 }
+
+interface BasicInfo {
+    title: string
+    content: string
+}
+
+const basicInformation: BasicInfo[] = [
+    {
+        title: 'Email',
+        content: 'cuervor14@gmail.com'
+    },
+    {
+        title: 'Phone',
+        content: '123-456-7890'
+    },
+    {
+        title: 'Birthday',
+        content: '01/01/1990'
+    },
+    {
+        title: 'Location',
+        content: 'Columbus, OH, USA'
+    }
+]
 
 export default function PageHeader({ portfolio, invalidation }: IProps) {
     const [openEditModal, setOpenEditModal] = useState(false)
@@ -26,8 +51,6 @@ export default function PageHeader({ portfolio, invalidation }: IProps) {
         <>
             <div className="border-b pb-4 ">
                 <div className="flex flex-col">
-                    <p className="text-lg text-foreground/60">Portfolio</p>
-
                     <div className="flex w-full justify-between">
                         <h1 className="text-3xl font-bold">{portfolio.name}</h1>
 
@@ -40,20 +63,22 @@ export default function PageHeader({ portfolio, invalidation }: IProps) {
                             </div>
 
                             <div className="hidden gap-2 sm:flex">
-                                <Button
-                                    variant="ghost"
-                                    onClick={() => setOpenDeleteModal(true)}
-                                >
+                                <Button variant="ghost" onClick={() => setOpenDeleteModal(true)}>
                                     Delete
                                 </Button>
-                                <Button
-                                    variant={'outline'}
-                                    onClick={() => setOpenEditModal(true)}
-                                >
+                                <Button variant={'outline'} onClick={() => setOpenEditModal(true)}>
                                     Edit
                                 </Button>
                             </div>
                         </div>
+                    </div>
+                    <div className="flex flex-col gap-4 pt-4">
+                        {basicInformation.map((info, index) => (
+                            <div key={index} className="flex flex-col">
+                                <span className="font-semibold">{info.title}</span>
+                                <CT>{info.content}</CT>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

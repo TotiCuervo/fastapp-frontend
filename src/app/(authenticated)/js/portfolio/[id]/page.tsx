@@ -81,7 +81,7 @@ export default function page({ params }: IProps) {
     return (
         <div className="flex flex-col gap-10">
             <PageHeader portfolio={data} invalidation={bothInvalidation} />
-            <Section
+            {/* <Section
                 title="Basic Information"
                 addModal={
                     <AddExperienceModal
@@ -100,7 +100,7 @@ export default function page({ params }: IProps) {
                         </div>
                     ))}
                 </div>
-            </Section>
+            </Section> */}
             <Section
                 title="Work Experience"
                 addModal={
@@ -112,7 +112,7 @@ export default function page({ params }: IProps) {
                 }
                 showIf="experience"
             >
-                <div className="flex  flex-col gap-4">
+                <div className="flex flex-col gap-4">
                     {data.experience.map((experience, index) => (
                         <ExperienceCard
                             key={`experience ${index}`}

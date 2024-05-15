@@ -28,7 +28,7 @@ export default function CopiableCard({ children, className, copyText, hoveringCh
                     ? null
                     : isCopied
                       ? 'hover:border-green-500'
-                      : 'hover:border-dashed hover:border-fastapp-500',
+                      : 'border-transparent hover:border-foreground',
                 className
             )}
             onClick={copyToClipboard}
@@ -47,7 +47,7 @@ export default function CopiableCard({ children, className, copyText, hoveringCh
                         ? null
                         : isCopied
                           ? 'group-hover/card:text-green-500'
-                          : 'group-hover/card:text-fastapp-500'
+                          : 'group-hover/card:text-foreground'
                 )}
                 style={{
                     left: 'calc(100% + 15px)'
