@@ -21,5 +21,5 @@ export default function usePortfoliosQuery() {
 
 async function fetch() {
     const { data } = await getPortfolios()
-    return data
+    return data.data
 }

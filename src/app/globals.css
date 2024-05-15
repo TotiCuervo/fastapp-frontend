@@ -2,69 +2,55 @@
 @tailwind components;
 @tailwind utilities;
  
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
- 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
- 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
- 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
- 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
- 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
- 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
- 
+    --background: 0 0% 100%; /* Updated background color */
+    --foreground: 0 0% 10%; /* Complementary to background */
+    --card: 200 16% 96%; /* Updated card color */
+    --card-foreground: 0 0% 20%; /* Slightly darker for readability */
+    --popover: 210 11% 90%; /* Slightly darker than card */
+    --popover-foreground: 0 0% 20%; /* Same as card-foreground */
+    --primary: 1 67% 51%; /* Your specified primary color */
+    --primary-foreground: 60 9% 98%; /* Light and readable on primary */
+    --secondary: 210 11% 80%; /* A cooler secondary color */
+    --secondary-foreground: 0 0% 20%; /* Light and readable on secondary */
+    --muted: 0 0% 80%; /* A neutral muted color */
+    --muted-foreground: 0 0% 30%; /* Slightly darker for readability */
+    --accent: 210 11% 85%; /* A cool accent color */
+    --accent-foreground: 0 0% 20%; /* Light and readable on accent */
+    --destructive: 0 84.2% 60.2%; /* Your specified color */
+    --destructive-foreground: 0 0% 98%; /* Light and readable on destructive */
+    --border: 0 0% 70%; /* A neutral border color */
+    --input: 0 0% 70%; /* Same as border */
+    --ring: 346.8 77.2% 49.8%; /* Ring color */
     --radius: 0.5rem;
   }
- 
+  
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
- 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
- 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
- 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
- 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
- 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
- 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
- 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
- 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --background: 120 1% 13%; /* Your specified color */
+    --foreground: 0 0% 90%; /* Complementary to background */
+    --card: 0 0% 20%; /* Your specified color */
+    --card-foreground: 0 0% 95%; /* Slightly lighter than card */
+    --popover: 120 1% 15%; /* Slightly lighter than background */
+    --popover-foreground: 0 0% 90%; /* Same as foreground */
+    --primary: 1 67% 51%; /* Your specified color */
+    --primary-foreground: 60 9% 98%; /* Light and readable on primary */
+    --secondary: 240 3.7% 15.9%; /* A cooler and darker secondary color */
+    --secondary-foreground: 0 0% 98%; /* Light and readable on secondary */
+    --muted: 0 0% 15%; /* A neutral muted color */
+    --muted-foreground: 240 5% 64.9%; /* Light and readable on muted */
+    --accent: 12 6.5% 15.1%; /* A cool accent color */
+    --accent-foreground: 0 0% 98%; /* Light and readable on accent */
+    --destructive: 0 62.8% 30.6%; /* Your specified color */
+    --destructive-foreground: 0 85.7% 97.3%; /* Light and readable on destructive */
+    --border: 240 3.7% 15.9%; /* A neutral border color */
+    --input: 240 3.7% 15.9%; /* Same as border */
+    --ring: 1 67% 40%; /* Ring color */
   }
 }
+
+
  
 @layer base {
   * {
@@ -77,4 +63,8 @@
 
 .transition {
   @apply transition-all duration-150 ease-in-out;
+}
+
+.hovered-bg {
+  @apply hover:bg-muted/70 transition;
 }

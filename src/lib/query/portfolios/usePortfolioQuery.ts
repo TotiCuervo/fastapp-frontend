@@ -4,14 +4,15 @@ import { Keys } from './keys'
 import getPortfolio from '@/lib/endpoints/portfolio/get-portfolio'
 
 interface usePortfolioQueryProps {
-    id: Portfolio['id']
+    id: Portfolio['id'] | undefined
 }
 
 export default function usePortfolioQuery({ id }: usePortfolioQueryProps) {
     return {
         ...useQuery<Portfolio>({
-            queryKey: Keys.portfolio(id),
-            queryFn: () => fetch({ id }),
+            queryKey: Keys.portfolio(id!!),
+            queryFn: () => fetch({ id: id!! }),
+            enabled: !!id,
         }),
     }
 }

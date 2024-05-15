@@ -5,11 +5,12 @@ interface NavbarGroupProps {
     children: React.ReactNode
     justify?: 'start' | 'end' | 'between'
     gap?: number
+    className?: string
 }
 
-export default function NavbarGroup({ children, justify, gap }: NavbarGroupProps) {
+export default function NavbarGroup({ children, justify, gap, className }: NavbarGroupProps) {
     return (
-        <div className={twMerge('flex w-full items-center', justify && `justify-${justify}`, gap && `gap-${gap}`)}>
+        <div className={twMerge('flex items-center', justify && `justify-${justify}`, gap && `gap-${gap}`, className)}>
             {children}
         </div>
     )
