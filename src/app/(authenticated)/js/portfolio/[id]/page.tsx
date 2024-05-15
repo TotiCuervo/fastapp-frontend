@@ -8,15 +8,11 @@ import Section from './components/section'
 import AddEducationModal from '@/components/modals/education-form-modal'
 import AddExperienceModal from '@/components/modals/experience-form-modal'
 import EducationCard from './components/education-card'
-import CT from '@/components/copy/copiable-text'
 import ExperienceCard from './components/experience-card'
 import usePortfolioQueryInvalidation from '@/lib/query/portfolios/invalidations/usePortfolioQueryInvalidation'
 import PageHeader from './components/page-header'
 import usePortfoliosQueryInvalidation from '@/lib/query/portfolios/invalidations/usePortfoliosQueryInvalidation'
-import TypeFilterItems from '../../components/shared/type-filter-items'
-import portfolioIdRoute from './_route'
 import SkillFormModal from '@/components/modals/skill-form-modal'
-import PortfolioFilterItems from '../../components/shared/portfolio-filter-items'
 import EmptyCard from './components/empty-card'
 import ExperienceIcon from '@/components/icons/experience-icon'
 import EducationIcon from '@/components/icons/education-icon'
@@ -29,31 +25,7 @@ interface IProps {
     }
 }
 
-interface BasicInfo {
-    title: string
-    content: string
-}
-
 const AddButton = () => <Button variant="ghost">Add</Button>
-
-const basicInformation: BasicInfo[] = [
-    {
-        title: 'Email',
-        content: 'cuervor14@gmail.com'
-    },
-    {
-        title: 'Phone',
-        content: '123-456-7890'
-    },
-    {
-        title: 'Birthday',
-        content: '01/01/1990'
-    },
-    {
-        title: 'Location',
-        content: 'Columbus, OH, USA'
-    }
-]
 
 export default function page({ params }: IProps) {
     const { id } = params
@@ -78,29 +50,11 @@ export default function page({ params }: IProps) {
         invalidate(intId)
     }
 
+    console.log({ data })
+
     return (
         <div className="flex flex-col gap-10">
             <PageHeader portfolio={data} invalidation={bothInvalidation} />
-            {/* <Section
-                title="Basic Information"
-                addModal={
-                    <AddExperienceModal
-                        trigger={<AddButton />}
-                        portfolioId={intId}
-                        onSuccessfullSubmit={invalidation}
-                    />
-                }
-                toggleable
-            >
-                <div className="flex flex-col gap-4">
-                    {basicInformation.map((info, index) => (
-                        <div key={index} className="flex flex-col">
-                            <span className="font-semibold">{info.title}</span>
-                            <CT>{info.content}</CT>
-                        </div>
-                    ))}
-                </div>
-            </Section> */}
             <Section
                 title="Work Experience"
                 addModal={

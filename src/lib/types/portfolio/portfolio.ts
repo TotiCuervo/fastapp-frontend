@@ -11,6 +11,6 @@ export default interface Portfolio {
     phone: string
     education: Education[]
     skills: Skill[]
-    experiences: Experience[]
+    experience: Experience[]
     user: User
 }
