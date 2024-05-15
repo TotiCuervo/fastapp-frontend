@@ -93,6 +93,9 @@ export default function PortfolioForm({
         try {
             const res = await UpdatePortfolio({
                 ...portfolio!,
+                experience: portfolio!.experience.map((exp) => exp.id),
+                education: portfolio!.education.map((edu) => edu.id),
+                skills: portfolio!.skills.map((skill) => skill.id),
                 ...values
             })
 

@@ -2,15 +2,15 @@ import client from '@/lib/client'
 import PortfolioInsert from '@/lib/types/portfolio/portfolio-insert'
 
 export default async function createPortfolio({
-    experiences = [],
+    experience = [],
     skills = [],
     education = [],
     ...props
 }: PortfolioInsert) {
     return client.post('/portfolios', {
         ...props,
-        experiences,
+        experience,
         skills,
-        education,
+        education
     })
 }
