@@ -5,49 +5,49 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* Updated background color */
-    --foreground: 0 0% 10%; /* Complementary to background */
-    --card: 200 16% 96%; /* Updated card color */
-    --card-foreground: 0 0% 20%; /* Slightly darker for readability */
-    --popover: 210 11% 90%; /* Slightly darker than card */
-    --popover-foreground: 0 0% 20%; /* Same as card-foreground */
-    --primary: 1 67% 51%; /* Your specified primary color */
-    --primary-foreground: 60 9% 98%; /* Light and readable on primary */
-    --secondary: 210 11% 80%; /* A cooler secondary color */
-    --secondary-foreground: 0 0% 20%; /* Light and readable on secondary */
-    --muted: 0 0% 80%; /* A neutral muted color */
-    --muted-foreground: 0 0% 30%; /* Slightly darker for readability */
-    --accent: 210 11% 85%; /* A cool accent color */
-    --accent-foreground: 0 0% 20%; /* Light and readable on accent */
-    --destructive: 0 84.2% 60.2%; /* Your specified color */
-    --destructive-foreground: 0 0% 98%; /* Light and readable on destructive */
-    --border: 0 0% 70%; /* A neutral border color */
-    --input: 0 0% 70%; /* Same as border */
-    --ring: 346.8 77.2% 49.8%; /* Ring color */
-    --radius: 0.5rem;
-  }
-  
-  .dark {
-    --background: 120 1% 13%; /* Your specified color */
-    --foreground: 0 0% 90%; /* Complementary to background */
-    --card: 0 0% 20%; /* Your specified color */
-    --card-foreground: 0 0% 95%; /* Slightly lighter than card */
-    --popover: 120 1% 15%; /* Slightly lighter than background */
-    --popover-foreground: 0 0% 90%; /* Same as foreground */
-    --primary: 1 67% 51%; /* Your specified color */
-    --primary-foreground: 60 9% 98%; /* Light and readable on primary */
-    --secondary: 240 3.7% 15.9%; /* A cooler and darker secondary color */
-    --secondary-foreground: 0 0% 98%; /* Light and readable on secondary */
-    --muted: 0 0% 15%; /* A neutral muted color */
-    --muted-foreground: 240 5% 64.9%; /* Light and readable on muted */
-    --accent: 12 6.5% 15.1%; /* A cool accent color */
-    --accent-foreground: 0 0% 98%; /* Light and readable on accent */
-    --destructive: 0 62.8% 30.6%; /* Your specified color */
-    --destructive-foreground: 0 85.7% 97.3%; /* Light and readable on destructive */
-    --border: 240 3.7% 15.9%; /* A neutral border color */
-    --input: 240 3.7% 15.9%; /* Same as border */
-    --ring: 1 67% 40%; /* Ring color */
-  }
+      --background: 0 0% 98;
+      --foreground: 240 10% 3.9%;
+      --card: 0 0% 100%;
+      --card-foreground: 240 10% 3.9%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 240 10% 3.9%;
+      --primary: 1 67% 51%;
+      --primary-foreground: 60 9% 98%;
+      --secondary: 240 4.8% 95.9%;
+      --secondary-foreground: 240 5.9% 10%;
+      --muted: 240 4.8% 95.9%;
+      --muted-foreground: 240 3.8% 46.1%;
+      --accent: 240 4.8% 95.9%;
+      --accent-foreground: 240 5.9% 10%;
+      --destructive: 0 84.2% 60.2%;
+      --destructive-foreground: 0 0% 98%;
+      --border: 240 5.9% 90%;
+      --input: 240 5.9% 90%;
+      --ring: 346.8 77.2% 49.8%;
+      --radius: 0.5rem;
+    }
+    
+    .dark {
+      --background: 20 14.3% 4.1%;
+      --foreground: 0 0% 95%;
+      --card: 24 9.8% 10%;
+      --card-foreground: 0 0% 95%;
+      --popover: 0 0% 9%;
+      --popover-foreground: 0 0% 95%;
+      --primary: 1 67% 51%;
+      --primary-foreground: 60 9% 98%;
+      --secondary: 240 3.7% 15.9%;
+      --secondary-foreground: 0 0% 98%;
+      --muted: 0 0% 15%;
+      --muted-foreground: 240 5% 64.9%;
+      --accent: 12 6.5% 15.1%;
+      --accent-foreground: 0 0% 98%;
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 0 85.7% 97.3%;
+      --border: 240 3.7% 15.9%;
+      --input: 240 3.7% 15.9%;
+      --ring: 1 67% 40%;
+    }
 }
 
 
