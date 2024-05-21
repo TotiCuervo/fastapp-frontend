@@ -10,17 +10,22 @@ import Education from '@/lib/types/education/education'
 import Experience from '@/lib/types/experience/experience'
 import ExperienceCard from '../portfolio/[id]/components/experience-card'
 import useUserExperienceQuery from '@/lib/query/experience/useUserExperienceQuery'
+import useUserEducationQueryInvalidation from '@/lib/query/education/invalidations/useUserEducationQueryInvalidation'
+import useUserExperienceQueryInvalidation from '@/lib/query/experience/invalidations/useUserExperienceQueryInvalidation'
 
 interface TotalData {
     type: 'education' | 'experience'
     object: Education | Experience
 }
 
-const DataRender = ({ item }: { item: TotalData }) => {
+function DataRender({ item }: { item: TotalData }) {
+    const invalidateEducation = useUserEducationQueryInvalidation()
+    const invalidateExperience = useUserExperienceQueryInvalidation()
+
     if (item.type === 'education') {
-        return <EducationCard education={item.object as Education} />
+        return <EducationCard education={item.object as Education} invalidation={invalidateEducation} />
     } else {
-        return <ExperienceCard experience={item.object as Experience} />
+        return <ExperienceCard experience={item.object as Experience} invalidation={invalidateExperience} />
     }
 }
 

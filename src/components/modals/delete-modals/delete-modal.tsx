@@ -15,6 +15,7 @@ import InternalOpenProps from '@/lib/types/misc/internal-dialog-props'
 import { useState } from 'react'
 import { Alert } from '@/lib/types/alert'
 import Alerter from '@/components/alerts/alerter'
+import { toast } from 'sonner'
 
 interface DeleteDialogModalProps extends InternalOpenProps {
     title: string
@@ -38,6 +39,7 @@ export default function DeleteDialogModal({
         setError(undefined)
         try {
             await onDelete()
+            toast.success(`${title} deleted successfully`)
         } catch (e) {
             setError({
                 message: 'An error occurred while deleting',
