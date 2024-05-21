@@ -17,6 +17,9 @@ interface InputProps {
 export function DateInput({ value, onChange }: InputProps) {
     const date = value ? new Date(value) : undefined
 
+    if (date) {
+        date.setDate(date.getDate() + 1)
+    }
     return (
         <Popover>
             <PopoverTrigger asChild>

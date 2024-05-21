@@ -156,6 +156,8 @@ export default function ExperienceForm({ onSuccessfullSubmit, Cancel, experience
                 apiData.endYear = null
             }
 
+            console.log({ apiData })
+
             // API call to create user education
             const res = await editUserExperience(apiData)
 

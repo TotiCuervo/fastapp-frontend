@@ -25,7 +25,7 @@ export const UserContext = createContext<UserContextValue>(initialUserContextVal
 
 // Create the context provider function
 export function UserProvider({ children }: { children: React.ReactNode }) {
-    const { data: session } = useSession()
+    const { data: session, update } = useSession()
 
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
@@ -54,6 +54,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
             const res = await getCurrentUser()
             const { data } = res.data
             setUser(data)
+            update({ ...session, user: { ...session.user, ...data } })
         } finally {
             setLoading(false)
         }

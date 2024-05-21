@@ -10,6 +10,7 @@ import { Alert } from '@/lib/types/alert'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const formSchema = z.object({
@@ -21,7 +22,6 @@ const formSchema = z.object({
 
 export default function ProfileEditForm() {
     const { user, refreshUser } = useUserContext()
-
     const [alert, setAlert] = useState<Alert>()
 
     const form = useForm({
@@ -35,19 +35,23 @@ export default function ProfileEditForm() {
     })
 
     useEffect(() => {
-        if (user) {
-            form.reset({
-                dob: user.dob,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                phoneNumber: user?.phoneNumbers[0]?.phoneNumber
-            })
-        }
+        if (!user) return
+
+        form.reset({
+            dob: user.dob,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phoneNumber: user?.phoneNumbers[0]?.phoneNumber
+        })
     }, [user])
 
-    const { control, handleSubmit } = form
+    const {
+        control,
+        handleSubmit,
+        formState: { isSubmitting }
+    } = form
 
-    function submitFunction(data: any) {
+    async function submitFunction(data: any) {
         if (!user) {
             return
         }
@@ -66,7 +70,8 @@ export default function ProfileEditForm() {
         }
         try {
             updateUser(apiData)
-            refreshUser()
+            await refreshUser()
+            toast.success('Profile updated successfully')
         } catch (error) {
             setAlert({
                 message: 'An error occurred while updating your profile',
@@ -137,7 +142,7 @@ export default function ProfileEditForm() {
                             )}
                         />
 
-                        <Button type="submit" loading={form.formState.isSubmitting} loadingText="Submitting...">
+                        <Button type="submit" loading={isSubmitting} loadingText="Saving...">
                             Save
                         </Button>
                     </div>
